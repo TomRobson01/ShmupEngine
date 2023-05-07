@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "DebugWindows/TRLoggerImGui.h"
 #include "DebugWindows/TestImGUIWindow.h"
 
 #include "TRRenderer.h"
@@ -92,9 +93,10 @@ TRRenderer::TRRenderer()
 	// --------------------------
 
 #ifdef _DEBUG
-	std::shared_ptr<imguiWindow> someWindow =  std::make_shared<TestImGUIWindow>();
-	someWindow->CreateWindow("Some window", ImVec2(0,0), ImVec2(512, 512), 0);
-	AddImguiWindowToRender(someWindow);
+	// ImGui window definitions
+	std::shared_ptr<imguiWindow> loggerWindow =  std::make_shared<TRLoggerImGui>();
+	loggerWindow->InitWindow("Logger", ImVec2(0,0), ImVec2(256, 256), ImGuiWindowFlags_None);
+	AddImguiWindowToRender(loggerWindow);
 #endif
 }
 
@@ -123,8 +125,6 @@ void TRRenderer::RenderStack()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(100, 100));
 #endif
 
 	// All this needs to happen for each render target
@@ -165,6 +165,9 @@ void TRRenderer::RenderStack()
 	// Draw everything in our imGUI buffer
 	for(std::shared_ptr<imguiWindow> w : imguiWindowStack)
 	{
+		ImGui::SetNextWindowPos(w.get()->QPos());
+		ImGui::SetNextWindowSize(w.get()->QSize());
+
 		w->Draw();
 	}
 	// ---------------------------------

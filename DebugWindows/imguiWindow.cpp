@@ -1,6 +1,6 @@
 #include "imguiWindow.h"
 
-void imguiWindow::CreateWindow(const char* asName, ImVec2 avStartPos, ImVec2 avScale, int aiFlags)
+void imguiWindow::InitWindow(const char* asName, ImVec2 avStartPos, ImVec2 avScale, int aiFlags)
 {
 	sName = asName;
 	startPos = avStartPos;

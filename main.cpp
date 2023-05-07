@@ -2,10 +2,12 @@
 #include <vector>
 
 #ifdef TRGAME
+#include "TRLogger.h"
 #include "Objects/TRObject.h"
 #include "Rendering/TRRenderer.h"
 #include "Rendering/TextureLoader.h"
 #endif
+
 
 
 #ifdef TRGAME
@@ -42,6 +44,12 @@ int main()
 	// Wireframe mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FLAT);	// GL_FLAT = normal
 												// GL_LINE = wireframe
+	
+	TRDEVASSERT(true, "Quick assert!");
+	TRLogger::QInstance()->Log("Quick log", LogSeverity::TR_DEFAULT);
+	TRLogger::QInstance()->Log("Quick log", LogSeverity::TR_WARNING);
+	TRLogger::QInstance()->Log("Quick log", LogSeverity::TR_ERROR);
+	TRLogger::QInstance()->Log("Quick log", LogSeverity::TR_FATAL);
 
 	// Primary game loop!
 	while (!glfwWindowShouldClose(window))		// For the sake of keeping things seperate, this won't be running on OpenGL for long

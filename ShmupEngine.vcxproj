@@ -293,8 +293,11 @@
     <ClCompile Include="Objects\TRObject.cpp" />
     <ClCompile Include="Rendering\TRRenderer.cpp" />
     <ClCompile Include="DebugWindows\TestImGUIWindow.cpp" />
+    <ClCompile Include="TRLogger.cpp" />
+    <ClCompile Include="DebugWindows\TRLoggerImGui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugWindows\ImGuiDefines.h" />
     <ClInclude Include="DebugWindows\imguiWindow.h" />
     <ClInclude Include="Libraries\imGUI\imconfig.h" />
     <ClInclude Include="Libraries\imGUI\imgui.h" />
@@ -312,6 +315,8 @@
     <ClInclude Include="Objects\TRObject.h" />
     <ClInclude Include="Rendering\TRRenderer.h" />
     <ClInclude Include="DebugWindows\TestImGUIWindow.h" />
+    <ClInclude Include="TRLogger.h" />
+    <ClInclude Include="DebugWindows\TRLoggerImGui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
