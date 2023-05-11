@@ -2,6 +2,7 @@
 #include <vector>
 
 #ifdef TRGAME
+#include "TRInput.h"
 #include "TRLogger.h"
 #include "Objects/TRObject.h"
 #include "Rendering/TRRenderer.h"
@@ -44,6 +45,10 @@ int main()
 	// Wireframe mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FLAT);	// GL_FLAT = normal
 												// GL_LINE = wireframe
+
+	// Initialize input system
+	TRInput::QInstance()->Init(window);
+
 	
 	TRDEVASSERT(true, "Quick assert!");
 	TRLogger::QInstance()->Log("Quick log", LogSeverity::TR_DEFAULT);
@@ -56,7 +61,21 @@ int main()
 	{
 
 		// Process input
-		processInput(window);
+		TRInput::QInstance()->PollInputs();
+
+
+		if (TRInput::QInstance()->QMousePressed(TRMOUSE_LEFT))
+		{
+			TRLogger::QInstance()->Log("Mouse pressed", LogSeverity::TR_DEFAULT);
+		}
+		if (TRInput::QInstance()->QMouseHeld(TRMOUSE_LEFT))
+		{
+			TRLogger::QInstance()->Log("Mouse held", LogSeverity::TR_DEFAULT);
+		}
+		if (TRInput::QInstance()->QMouseReleased(TRMOUSE_LEFT))
+		{
+			TRLogger::QInstance()->Log("Mouse released", LogSeverity::TR_DEFAULT);
+		}
 
 		// Any gameplay calculations
 		// Update all world objects
