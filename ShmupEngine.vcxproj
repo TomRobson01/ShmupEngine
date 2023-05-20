@@ -296,6 +296,8 @@
     <ClCompile Include="TRInput.cpp" />
     <ClCompile Include="TRLogger.cpp" />
     <ClCompile Include="DebugWindows\TRLoggerImGui.cpp" />
+    <ClCompile Include="Objects\TRWorld.cpp" />
+    <ClCompile Include="Objects\TRWorldObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugWindows\ImGuiDefines.h" />
@@ -319,6 +321,8 @@
     <ClInclude Include="TRInput.h" />
     <ClInclude Include="TRLogger.h" />
     <ClInclude Include="DebugWindows\TRLoggerImGui.h" />
+    <ClInclude Include="Objects\TRWorld.h" />
+    <ClInclude Include="Objects\TRWorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

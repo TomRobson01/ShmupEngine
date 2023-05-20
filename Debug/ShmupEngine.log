@@ -1,5 +1,5 @@
-﻿  imguiWindow.cpp
-  TRInput.cpp
-  main.cpp
+﻿  TRWorld.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(31,30): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
+  TRWorldObject.cpp
   Generating Code...
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe
