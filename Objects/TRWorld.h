@@ -3,6 +3,8 @@
 
 #include "Rendering/TRRenderer.h"
 
+#define FIXED_DELTA_TIME 0.06		
+
 class TRWorld
 {
 public:

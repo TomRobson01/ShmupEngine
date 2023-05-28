@@ -12,9 +12,6 @@
 #include <memory>
 #include <vector>
 
-#define START_HEIGHT 720
-#define START_WIDTH  1280
-
 struct TRRenderTarget
 {
 public:

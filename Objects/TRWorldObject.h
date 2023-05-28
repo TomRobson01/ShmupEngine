@@ -3,7 +3,7 @@
 #include "TRObject.h"
 #include "Physics/TRPhysics.h"
 
-class TRWorldObject : TRObject
+class TRWorldObject : public TRObject
 {
 public:
 	TRWorldObject() = default;
@@ -23,7 +23,6 @@ protected:
 	virtual void OnUpdate();
 	virtual void OnFixedUpdate();
 
-private:
 	Transform transform;
 	TRObject baseObject;
 };

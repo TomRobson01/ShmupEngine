@@ -13,26 +13,58 @@ public:
 		rotation = afRotation;
 	};
 
-	void SetPosition(float aiX, float aiY, float aiZ)
+	void Translate(float afXDelta, float afYDelta, float afZDelta, float afRotationDelta)
 	{
-		x = aiX;
-		y = aiY;
-		z = aiZ;
+		x += afXDelta;
+		y += afYDelta;
+		z += afZDelta;
+		rotation += afRotationDelta;
+		ResolveClamps();
 	}
 
-	float SetPositionX(float aiNewVal)
+	void SetClamp(float afXMin, float afXMax, float afYMin, float afYMax)
 	{
-		x = aiNewVal;
+		xClampMin = afXMin;
+		xClampMax = afXMax;
+		yClampMin = afYMin;
+		yClampMax = afYMax;
+
+		bClampsActive = true;
+	}
+
+	void ReleaseClamps()
+	{
+		bClampsActive = false;
+		xClampMin = 0;
+		xClampMax = 0;
+		yClampMin = 0;
+		yClampMax = 0;
+	}
+
+	void SetPosition(float afX, float afY, float afZ)
+	{
+		x = afX;
+		y = afY;
+		z = afZ;
+		ResolveClamps();
+	}
+
+	float SetPositionX(float afNewVal)
+	{
+		x = afNewVal;
+		ResolveClamps();
 		QPositionX();
 	}
-	float SetPositionY(float aiNewVal)
+	float SetPositionY(float afNewVal)
 	{
-		y = aiNewVal;
+		y = afNewVal;
+		ResolveClamps();
 		QPositionY();
 	}
-	float SetPositionZ(float aiNewVal)
+	float SetPositionZ(float afNewVal)
 	{
-		z = aiNewVal;
+		z = afNewVal;
+		ResolveClamps();
 		QPositionZ();
 	}
 
@@ -46,6 +78,24 @@ public:
 protected:
 	float x, y, z;
 	float rotation;
+
+	float xClampMin, xClampMax;
+	float yClampMin, yClampMax;
+
+private:
+	void ResolveClamps()
+	{
+		if (!bClampsActive)
+			return;
+
+		x = x < xClampMin ? xClampMin : x;
+		x = x > xClampMax ? xClampMax : x;
+		y = y < yClampMin ? yClampMin : y;
+		y = y > yClampMax ? yClampMax : y;
+	}
+
+	bool bClampsActive;
+
 };
 
 class TRPhysics

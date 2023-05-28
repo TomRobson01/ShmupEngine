@@ -7,17 +7,24 @@
 #include "TRRenderer.h"
 #include "Rendering/ShaderManagement.h"
 
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 600
-
 std::vector<TRRenderTarget> RenderTargetStack;
 std::atomic<bool> RenderThreadLock;
+
+namespace
+{
+	int screenWidth		= 800;
+	int screenHeight	= 600;
+
+	float fCamZoom = 4.0f;
+}
 
 // OpenGL resize callback
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	std::cout << "New Resolution:\n" << width << ", " << height << std::endl;
-	glViewport(0, 0, width, height);
+	screenWidth		= width;
+	screenHeight	= height;
+	std::cout << "New Resolution:\n" << screenWidth << ", " << screenHeight << std::endl;
+	glViewport(0, 0, screenWidth, screenHeight);
 }
 
 TRRenderer::TRRenderer()
@@ -29,7 +36,7 @@ TRRenderer::TRRenderer()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create our glfw window
-	window = glfwCreateWindow(START_WIDTH, START_HEIGHT, "LearnOpenGL", NULL, NULL);
+	window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -56,7 +63,7 @@ TRRenderer::TRRenderer()
 #endif
 
 	// Create our viewport
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, screenWidth, screenHeight);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// Initialize any of our main classes
@@ -144,7 +151,7 @@ void TRRenderer::RenderStack()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		projection = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
+		projection = glm::ortho(-4.0f * fCamZoom, +4.0f * fCamZoom, -3.f * fCamZoom, +3.f * fCamZoom, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "camMatrix"), 1, GL_FALSE, glm::value_ptr(projection * view));
 
 		// Also need to handle transformation

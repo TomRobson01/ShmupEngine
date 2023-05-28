@@ -1,5 +1,4 @@
-﻿  TRWorld.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(31,30): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-  TRWorldObject.cpp
-  Generating Code...
+﻿  TRPlayer.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(91,54): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(92,54): warning C4305: '*=': truncation from 'double' to 'float'
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe
