@@ -72,10 +72,10 @@ private:
 	float verticies[36] =
 	{
 		// Points				// Colors				// Texture coords
-		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,			// Top Left
-		 0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f,			// Top Right
-		-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,			// Bottom Left
-		 0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f			// Bottom Right
+		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,			// Top Left
+		 0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,			// Top Right
+		-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,			// Bottom Left
+		 0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f			// Bottom Right
 	};
 
 	unsigned int indices[6] = {

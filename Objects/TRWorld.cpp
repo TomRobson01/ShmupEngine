@@ -1,5 +1,7 @@
 #include "TRWorld.h"
 
+#include <iostream>
+
 #include <ctime>
 #include <vector>
 
@@ -7,7 +9,6 @@
 
 namespace 
 {
-	std::vector<std::shared_ptr<TRWorldObject>> worldObjects;
 	clock_t lastFixedUpdateTime;
 }
 
@@ -36,12 +37,15 @@ void TRWorld::UpdateWorld()
 	}
 
 	// Send CallUpdate() to every object, and then if it's a FixedUpdate frame, send CallFixedUpdate()
-	for (std::shared_ptr<TRWorldObject> obj : worldObjects)
+	for (int i = 0; i < worldObjects.size(); i++)
 	{
-		obj->CallUpdate();
-		if (fTimeSinceFixedUpdate >= FIXED_UPDATE_TICKS)
+		if (worldObjects[i])
 		{
-			obj->CallFixedUpdate();
+			worldObjects[i]->CallUpdate();
+			if (fTimeSinceFixedUpdate >= FIXED_UPDATE_TICKS)
+			{
+				worldObjects[i]->CallFixedUpdate();
+			}
 		}
 	}
 }
@@ -53,14 +57,4 @@ void TRWorld::UpdateWorld()
 void TRWorld::UnloadWorld()
 {
 	worldObjects.clear();
-}
-
-/// <summary>
-/// Adds a shared_ptr TRWorldObject to our WorldObjects vector.
-/// </summary>
-/// <param name="apWorldObj">A shared_ptr for the new object we wish to track to the world.</param>
-void TRWorld::AddWorldObject(std::shared_ptr<TRWorldObject> apWorldObj)
-{
-	worldObjects.push_back(apWorldObj);
-	apWorldObj->CallStart();
 }

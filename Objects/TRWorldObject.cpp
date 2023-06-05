@@ -1,12 +1,15 @@
-#include "TRWorldObject.h"
+#include "TRWorld.h"
+#include <iostream>
 
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Rendering/TRRenderer.h"
 
-TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform)
+TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, int aiID)
 {
 	baseObject = aBaseObj;
-	transform = atInitialTransform;
+	transform = new Transform();
+	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
+	objID = aiID;
 }
 
 TRWorldObject::~TRWorldObject()
@@ -26,12 +29,11 @@ void TRWorldObject::OnStart()
 /// </summary>
 void TRWorldObject::OnUpdate()
 {
-	Transform* t = QTransform();
 	TRRenderer::QInstance().AddRenderTarget(
-		t->QPositionX(),
-		t->QPositionY(),
-		t->QPositionZ(),
-		t->QRotation(),
+		transform->QPositionX(),
+		transform->QPositionY(),
+		transform->QPositionZ(),
+		transform->QRotation(),
 		baseObject.QTexture());
 }
 
@@ -40,4 +42,9 @@ void TRWorldObject::OnUpdate()
 /// </summary>
 void TRWorldObject::OnFixedUpdate()
 {
+}
+
+void TRWorldObject::Destroy()
+{
+	TRWorld::QInstance()->RemoveWorldObject(QID());
 }

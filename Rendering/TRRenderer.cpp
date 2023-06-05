@@ -99,6 +99,10 @@ TRRenderer::TRRenderer()
 
 	// --------------------------
 
+	// Sprite background blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 #ifdef _DEBUG
 	// ImGui window definitions
 	std::shared_ptr<imguiWindow> loggerWindow =  std::make_shared<TRLoggerImGui>();

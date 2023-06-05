@@ -3,10 +3,13 @@
 #include <iostream>
 
 #include "TRInput.h"
+#include "TRProjectile.h"
+#include "TRWorldObject.h"
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Objects/TRWorld.h"
 
 #define PLAYER_SPEED 5	// We'll want this to be exposed to the editor eventually, but until we know what form that takes, let's just define it here
+#define CLOCKS_BETWEEN_SHOTS 5
 
 namespace
 {
@@ -15,6 +18,11 @@ namespace
 
 	const ImVec2 vPlayerXClamp = ImVec2(-15.5f, -2.0f);
 	const ImVec2 vPlayerYClamp = ImVec2(-11.5f, 11.5f);
+
+	int iTicksSinceShot		= 0;
+	bool bCanShoot			= false;
+
+	TRObject ObjProjectile;
 }
 
 TRPlayer* TRPlayer::instancePtr;
@@ -27,10 +35,12 @@ TRPlayer* TRPlayer::QInstance()
 	return instancePtr;
 }
 
-TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform)
+TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, int aiID)
 {
 	baseObject = aBaseObj;
-	transform = atInitialTransform;
+	transform = new Transform();
+	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
+	objID = aiID;
 }
 
 TRPlayer::~TRPlayer()
@@ -39,22 +49,41 @@ TRPlayer::~TRPlayer()
 
 void TRPlayer::OnStart()
 {
+	ObjProjectile = TRObject("Projectile", "Assets/Textures/T_Temp_Player_Sprite.png");
+	QTransform()->SetClamp(vPlayerXClamp.x, vPlayerXClamp.y, vPlayerYClamp.x, vPlayerYClamp.y);
+
 	TRLoggerImGui::QInstance()->AddLog("New player started!", LogSeverity::TR_DEFAULT);
-	transform.SetClamp(vPlayerXClamp.x, vPlayerXClamp.y, vPlayerYClamp.x, vPlayerYClamp.y);
 	this->TRWorldObject::OnStart();
 }
 
 void TRPlayer::OnUpdate()
 {
+	// Movement 
 	CalculateTargetVelocity();
-	transform.Translate(vTargetVelocity.x, vTargetVelocity.y, 0, 0);
+	QTransform()->Translate(vTargetVelocity.x, vTargetVelocity.y, 0, 0);
+
+	// Combat
+	if (TRInput::QInstance()->QMouseHeld(TRMOUSE_LEFT) && bCanShoot)
+	{
+		// Shoot!
+		HandleShotFired();
+	}
+
 	this->TRWorldObject::OnUpdate();
 }
 
 void TRPlayer::OnFixedUpdate()
 {
-	std::string outStr = "Player position: " + std::to_string(transform.QPositionX()) + ", " + std::to_string(transform.QPositionY());
-	std::cout << outStr << "\n";
+	// Tick the shot cooldown up, and handle the current state of that
+	// We may want to replace this with a proper timer class later, depends on engine scope
+	if (!bCanShoot)
+	{
+		iTicksSinceShot++;
+		if (iTicksSinceShot >= CLOCKS_BETWEEN_SHOTS)
+		{
+			bCanShoot = true;
+		}
+	}
 	this->TRWorldObject::OnFixedUpdate();
 }
 
@@ -93,4 +122,15 @@ void TRPlayer::CalculateTargetVelocity()
 	// Then multiply our by our speeds
 	vTargetVelocity.x *= PLAYER_SPEED * FIXED_DELTA_TIME;
 	vTargetVelocity.y *= PLAYER_SPEED * FIXED_DELTA_TIME;
+}
+
+/// <summary>
+/// Handles any behavior for firing a shot and resetting the recovery timer
+/// </summary>
+void TRPlayer::HandleShotFired()
+{
+	TRLoggerImGui::QInstance()->AddLog("Pew", LogSeverity::TR_DEFAULT);
+	TRWorld::QInstance()->InstanciateObject<TRProjectile>(ObjProjectile, *transform)->InitializeProjectileData(10.0f, 0.0f, 1.0f);
+	bCanShoot = false;
+	iTicksSinceShot = 0;
 }

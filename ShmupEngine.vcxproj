@@ -299,6 +299,7 @@
     <ClCompile Include="Objects\TRWorld.cpp" />
     <ClCompile Include="Objects\TRWorldObject.cpp" />
     <ClCompile Include="Objects\TRPlayer.cpp" />
+    <ClCompile Include="Objects\TRProjectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugWindows\ImGuiDefines.h" />
@@ -325,6 +326,7 @@
     <ClInclude Include="Objects\TRWorld.h" />
     <ClInclude Include="Objects\TRWorldObject.h" />
     <ClInclude Include="Objects\TRPlayer.h" />
+    <ClInclude Include="Objects\TRProjectile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

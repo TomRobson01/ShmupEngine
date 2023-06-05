@@ -1,6 +1,8 @@
 #pragma once
-#include "TRWorldObject.h"
 
+#include <map>
+
+#include "TRWorldObject.h"
 #include "Rendering/TRRenderer.h"
 
 #define FIXED_DELTA_TIME 0.06		
@@ -23,18 +25,29 @@ public:
 	template<typename T>
 	std::shared_ptr<T> InstanciateObject(TRObject aBase, Transform atInitialTransform = Transform())
 	{
-		std::shared_ptr<T> pOut = std::make_shared<T>(aBase, atInitialTransform);
-		AddWorldObject(pOut);
+		IDGenerator++;
+		std::shared_ptr<T> pOut = std::make_shared<T>(aBase, atInitialTransform, IDGenerator);
+		worldObjects.insert(std::make_pair(IDGenerator, pOut));
+		pOut->CallStart();
 		return pOut;
 	}
 
-protected:
-	void AddWorldObject(std::shared_ptr<TRWorldObject> apWorldObj);
+	/// <summary>
+	/// Erases a world object from the worldObjects map with a given key. This despawns the object and removes it from memory.
+	/// </summary>
+	/// <param name="aiTargetID">The target objects world ID, which the worldObjects map uses as a key.</param>
+	void RemoveWorldObject(int aiTargetID)
+	{
+		worldObjects.erase(aiTargetID);
+	}
 
 private:
 	TRWorld() {}
 
 	static TRWorld* instancePtr;
+
+	std::map<int, std::shared_ptr<TRWorldObject>> worldObjects;
+	int IDGenerator = 0;
 };
 
 

@@ -7,23 +7,29 @@ class TRWorldObject : public TRObject
 {
 public:
 	TRWorldObject() = default;
-	TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform);
+	TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, int aiID);
 	~TRWorldObject();
 
-	void CallStart()		{ OnStart(); }
-	void CallUpdate()		{ OnUpdate(); }
-	void CallFixedUpdate()	{ OnFixedUpdate(); }
+	void		CallStart()			{ OnStart(); }
+	void		CallUpdate()		{ OnUpdate(); }
+	void		CallFixedUpdate()	{ OnFixedUpdate(); }
 
-	TRObject QBaseObject() { return baseObject; }
+	TRObject	QBaseObject() { return baseObject; }
 
-	Transform* QTransform() { return &transform; }
+	Transform*	QTransform() { return transform; }
+
+	void		Destroy();
+
+	int QID() { return objID; }
 
 protected:
 	virtual void OnStart();
 	virtual void OnUpdate();
 	virtual void OnFixedUpdate();
 
-	Transform transform;
+	Transform* transform;
 	TRObject baseObject;
+
+	int objID;
 };
 

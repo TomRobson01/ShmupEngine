@@ -5,7 +5,7 @@
 class TRPlayer : public TRWorldObject
 {
 public:
-	TRPlayer(TRObject& aBaseObj, Transform atInitialTransform);
+	TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, int aiID);
 	~TRPlayer();
 	static TRPlayer* QInstance();
 
@@ -16,6 +16,7 @@ public:
 
 private:
 	void CalculateTargetVelocity();
+	void HandleShotFired();
 
 	TRPlayer() {}
 
