@@ -4,11 +4,12 @@
 #include "Objects/TRWorld.h"
 
 
-TRProjectile::TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, int aiID)
+TRProjectile::TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
 {
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
+	collider = new CircleCollider(afColliderRadius, aeLayer);
 	objID = aiID;
 }
 

@@ -4,7 +4,7 @@
 class TRProjectile : public TRWorldObject
 {
 public:
-	TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, int aiID);
+	TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID);
 	~TRProjectile();
 
 	void OnStart() override;

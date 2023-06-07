@@ -7,16 +7,18 @@ class TRWorldObject : public TRObject
 {
 public:
 	TRWorldObject() = default;
-	TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, int aiID);
+	TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID);
 	~TRWorldObject();
 
 	void		CallStart()			{ OnStart(); }
 	void		CallUpdate()		{ OnUpdate(); }
 	void		CallFixedUpdate()	{ OnFixedUpdate(); }
+	void		CallOnCollision(TRWorldObject* apOtherObject)	{ OnCollision(apOtherObject); }
 
-	TRObject	QBaseObject() { return baseObject; }
+	TRObject		QBaseObject()	{ return baseObject; }
 
-	Transform*	QTransform() { return transform; }
+	Transform*		QTransform()	{ return transform; }
+	CircleCollider*	QCollider()		{ return collider;	}
 
 	void		Destroy();
 
@@ -27,7 +29,10 @@ protected:
 	virtual void OnUpdate();
 	virtual void OnFixedUpdate();
 
+	virtual void OnCollision(TRWorldObject* apOtherObject);
+
 	Transform* transform;
+	CircleCollider* collider;
 	TRObject baseObject;
 
 	int objID;

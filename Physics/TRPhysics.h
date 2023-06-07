@@ -1,5 +1,8 @@
 #pragma once
 
+// Forward definitions
+class TRWorldObject;
+
 struct Transform
 {
 public:
@@ -98,8 +101,67 @@ private:
 
 };
 
+enum class CollisionLayer
+{
+	// WARNING!
+	// Each time you add to this, please increment the size of the CollisionLayers array in TRPhysics.cpp
+	CL_DEFAULT				= 0,
+	CL_PLAYER				= 1,
+	CL_ENEMY				= 2,
+	CL_PLAYER_PROJECTILE	= 3,
+	CL_ENEMY_PROJECTILE		= 4,
+	CL_COUNT				= 5	// END
+
+};
+
+/// <summary>
+/// Class containing data for a simple, radial collider
+/// </summary>
+class CircleCollider
+{
+public:
+	CircleCollider(float afRadius, CollisionLayer aeLayer = CollisionLayer::CL_DEFAULT);
+	CircleCollider(float ax, float ay, float afRadius, CollisionLayer aeLayer = CollisionLayer::CL_DEFAULT);
+
+	void SetPosition(float afX, float afY)
+	{
+		x = afX;
+		y = afY;
+	}
+
+	float QPosX()	{ return x; }
+	float QPosY()	{ return y; }
+	float QRadius() { return fRadius; }
+
+	void SetID(int aID) { ID = aID; }
+	int  QID()			{ return ID; }
+
+	CollisionLayer QCollisionLayer() { return colLayer; }
+
+protected:
+	float x, y;
+	float fRadius;
+	CollisionLayer colLayer = CollisionLayer::CL_DEFAULT;
+
+private:
+	int ID;
+};
+
+
 class TRPhysics
 {
+public:
+	static TRPhysics* QInstance();
 
+	void RegisterCollider(CollisionLayer aeTargetLayer, TRWorldObject* apCollider);
+	void UnRegisterCollider(TRWorldObject* apCollider);
+
+	bool QIsColliding(TRWorldObject* apColliderA, TRWorldObject* apColliderB);
+	bool QIsCollidingWithAnyInLayer(TRWorldObject* apCollider, CollisionLayer aeTargetlayer);
+
+private:
+	TRPhysics() {}
+
+	static TRPhysics* instancePtr;
 };
 

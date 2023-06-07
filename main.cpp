@@ -4,6 +4,7 @@
 #ifdef TRGAME
 #include "TRInput.h"
 #include "TRLogger.h"
+#include "Gameplay/AI/TREnemy.h"
 #include "Objects/TRPlayer.h"
 #include "Objects/TRWorld.h"
 #include "Rendering/TextureLoader.h"
@@ -40,9 +41,12 @@ int main()
 	TRObject ObjBricks("Brick", "Assets/Textures/T_Bricks.png");
 	TRObject ObjBricksIvy("Brick Ivy", "Assets/Textures/T_Bricks_Ivy.png");
 	TRObject ObjPlayer("Player", "Assets/Textures/T_Temp_Player_Sprite.png");
+	TRObject ObjEnemy("Enemy", "Assets/Textures/T_Temp_Player_Sprite.png");
 
 	// We always instantiate our player via code, as they're a given. However, we'll do this via a TRWorld method later
-	TRWorld::QInstance()->InstanciateObject<TRPlayer>(ObjPlayer, Transform(0, 0, 0, 0));
+	TRWorld::QInstance()->InstanciateObject<TRPlayer>(ObjPlayer, Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
+
+	TRWorld::QInstance()->InstanciateObject<TREnemy>(ObjEnemy, Transform(-10, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
 
 
 	// Wireframe mode

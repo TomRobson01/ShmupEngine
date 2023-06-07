@@ -28,19 +28,17 @@ namespace
 TRPlayer* TRPlayer::instancePtr;
 TRPlayer* TRPlayer::QInstance()
 {
-	if (instancePtr == nullptr)
-	{
-		instancePtr = new TRPlayer();
-	}
 	return instancePtr;
 }
 
-TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, int aiID)
+TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
 {
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
+	collider = new CircleCollider(afColliderRadius, aeLayer);
 	objID = aiID;
+	instancePtr = this;
 }
 
 TRPlayer::~TRPlayer()
@@ -129,8 +127,7 @@ void TRPlayer::CalculateTargetVelocity()
 /// </summary>
 void TRPlayer::HandleShotFired()
 {
-	TRLoggerImGui::QInstance()->AddLog("Pew", LogSeverity::TR_DEFAULT);
-	TRWorld::QInstance()->InstanciateObject<TRProjectile>(ObjProjectile, *transform)->InitializeProjectileData(10.0f, 0.0f, 1.0f);
+	TRWorld::QInstance()->InstanciateObject<TRProjectile>(ObjProjectile, *transform, 0.5f, CollisionLayer::CL_PLAYER_PROJECTILE)->InitializeProjectileData(10.0f, 0.0f, 1.0f);
 	bCanShoot = false;
 	iTicksSinceShot = 0;
 }

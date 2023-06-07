@@ -1,4 +1,3 @@
-﻿  TRRenderer.cpp
-  main.cpp
-  Generating Code...
+﻿  TRPhysics.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Physics\TRPhysics.cpp(93,20): warning C4018: '<': signed/unsigned mismatch
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe

@@ -10,6 +10,7 @@
 namespace 
 {
 	clock_t lastFixedUpdateTime;
+	std::vector<int> garbageObjCollection;
 }
 
 TRWorld* TRWorld::instancePtr;
@@ -36,6 +37,13 @@ void TRWorld::UpdateWorld()
 		lastFixedUpdateTime = cCurrentClock;
 	}
 
+	// Before updating anything remove any object we marked for deferred removal
+	for (int i : garbageObjCollection)
+	{
+		worldObjects.erase(i);
+	}
+	garbageObjCollection.clear();
+
 	// Send CallUpdate() to every object, and then if it's a FixedUpdate frame, send CallFixedUpdate()
 	for (int i = 0; i < worldObjects.size(); i++)
 	{
@@ -57,4 +65,13 @@ void TRWorld::UpdateWorld()
 void TRWorld::UnloadWorld()
 {
 	worldObjects.clear();
+}
+
+/// <summary>
+/// Mark an object to be deleted at the beginning of next frame. This is the safest way of deleting an object.
+/// </summary>
+/// <param name="aiTargetID">The ID of the object we want to remove.</param>
+void TRWorld::RemoveWorldObject(int aiTargetID)
+{
+	garbageObjCollection.push_back(aiTargetID);
 }

@@ -293,6 +293,7 @@
     <ClCompile Include="Objects\TRObject.cpp" />
     <ClCompile Include="Rendering\TRRenderer.cpp" />
     <ClCompile Include="DebugWindows\TestImGUIWindow.cpp" />
+    <ClCompile Include="Gameplay\AI\TREnemy.cpp" />
     <ClCompile Include="TRInput.cpp" />
     <ClCompile Include="TRLogger.cpp" />
     <ClCompile Include="DebugWindows\TRLoggerImGui.cpp" />
@@ -320,6 +321,7 @@
     <ClInclude Include="Objects\TRObject.h" />
     <ClInclude Include="Rendering\TRRenderer.h" />
     <ClInclude Include="DebugWindows\TestImGUIWindow.h" />
+    <ClInclude Include="Gameplay\AI\TREnemy.h" />
     <ClInclude Include="TRInput.h" />
     <ClInclude Include="TRLogger.h" />
     <ClInclude Include="DebugWindows\TRLoggerImGui.h" />

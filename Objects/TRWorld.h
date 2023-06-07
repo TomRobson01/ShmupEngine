@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 #include "TRWorldObject.h"
 #include "Rendering/TRRenderer.h"
@@ -23,23 +24,17 @@ public:
 	/// <param name="atInitialTransform">The initial transformation for this new object.</param>
 	/// <returns>A stared_ptr of the newly instanciated object.</returns>
 	template<typename T>
-	std::shared_ptr<T> InstanciateObject(TRObject aBase, Transform atInitialTransform = Transform())
+	std::shared_ptr<T> InstanciateObject(TRObject aBase, Transform atInitialTransform = Transform(), float afColliderRadius = 0.5f, CollisionLayer aeLayer = CollisionLayer::CL_DEFAULT)
 	{
 		IDGenerator++;
-		std::shared_ptr<T> pOut = std::make_shared<T>(aBase, atInitialTransform, IDGenerator);
+		std::shared_ptr<T> pOut = std::make_shared<T>(aBase, atInitialTransform, afColliderRadius, aeLayer, IDGenerator);
 		worldObjects.insert(std::make_pair(IDGenerator, pOut));
 		pOut->CallStart();
+		TRPhysics::QInstance()->RegisterCollider(aeLayer, pOut.get());
 		return pOut;
 	}
 
-	/// <summary>
-	/// Erases a world object from the worldObjects map with a given key. This despawns the object and removes it from memory.
-	/// </summary>
-	/// <param name="aiTargetID">The target objects world ID, which the worldObjects map uses as a key.</param>
-	void RemoveWorldObject(int aiTargetID)
-	{
-		worldObjects.erase(aiTargetID);
-	}
+	void RemoveWorldObject(int aiTargetID);
 
 private:
 	TRWorld() {}

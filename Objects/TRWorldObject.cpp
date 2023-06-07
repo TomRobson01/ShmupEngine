@@ -4,16 +4,18 @@
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Rendering/TRRenderer.h"
 
-TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, int aiID)
+TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
 {
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
+	collider = new CircleCollider(afColliderRadius, aeLayer);
 	objID = aiID;
 }
 
 TRWorldObject::~TRWorldObject()
 {
+	TRPhysics::QInstance()->UnRegisterCollider(this);
 }
 
 /// <summary>
@@ -21,7 +23,7 @@ TRWorldObject::~TRWorldObject()
 /// </summary>
 void TRWorldObject::OnStart()
 {
-	TRLoggerImGui::QInstance()->AddLog("New object started!", LogSeverity::TR_DEFAULT);
+	//TRLoggerImGui::QInstance()->AddLog("New object started!", LogSeverity::TR_DEFAULT);
 }
 
 /// <summary>
@@ -35,6 +37,8 @@ void TRWorldObject::OnUpdate()
 		transform->QPositionZ(),
 		transform->QRotation(),
 		baseObject.QTexture());
+
+	collider->SetPosition(transform->QPositionX(), transform->QPositionY());
 }
 
 /// <summary>
@@ -42,6 +46,11 @@ void TRWorldObject::OnUpdate()
 /// </summary>
 void TRWorldObject::OnFixedUpdate()
 {
+}
+
+void TRWorldObject::OnCollision(TRWorldObject* apOtherObject)
+{
+
 }
 
 void TRWorldObject::Destroy()
