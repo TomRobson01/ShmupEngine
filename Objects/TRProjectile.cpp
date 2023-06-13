@@ -15,7 +15,6 @@ TRProjectile::TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, flo
 
 TRProjectile::~TRProjectile()
 {
-	TRLoggerImGui::QInstance()->AddLog("Projectile died.", LogSeverity::TR_DEFAULT);
 }
 
 void TRProjectile::OnStart()

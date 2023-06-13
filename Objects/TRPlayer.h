@@ -12,6 +12,7 @@ public:
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnFixedUpdate() override;
+	void OnCollision(TRWorldObject* apOtherObject) override;
 
 
 private:

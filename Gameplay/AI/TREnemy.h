@@ -1,6 +1,13 @@
 #pragma once
 #include "Objects/TRWorldObject.h"
 
+enum class ENEMY_MOTION_TYPE
+{
+	MT_PROGRESS,
+	MT_HOMING,
+	MT_COUNT
+};
+
 class TREnemy : public TRWorldObject
 {
 public:
@@ -12,7 +19,17 @@ public:
 	void OnFixedUpdate() override;
 	void OnCollision(TRWorldObject* apOtherObject) override;
 
+	void DamageHealth(float afDamage);
+
+	ENEMY_MOTION_TYPE QMotionType() { return motionType; }
+
+protected:
+	void FireShot();
+	void TickMotion();
+
 private:
 	TREnemy() {}
+
+	ENEMY_MOTION_TYPE motionType;
 };
 

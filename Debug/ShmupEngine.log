@@ -1,3 +1,4 @@
-﻿  TRPhysics.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Physics\TRPhysics.cpp(93,20): warning C4018: '<': signed/unsigned mismatch
+﻿  TRPlayer.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(138,54): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(139,54): warning C4305: '*=': truncation from 'double' to 'float'
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe

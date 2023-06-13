@@ -46,7 +46,7 @@ int main()
 	// We always instantiate our player via code, as they're a given. However, we'll do this via a TRWorld method later
 	TRWorld::QInstance()->InstanciateObject<TRPlayer>(ObjPlayer, Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
 
-	TRWorld::QInstance()->InstanciateObject<TREnemy>(ObjEnemy, Transform(-10, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
+	TRWorld::QInstance()->InstanciateObject<TREnemy>(ObjEnemy, Transform(10, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
 
 
 	// Wireframe mode
