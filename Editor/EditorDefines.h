@@ -1,0 +1,9 @@
+#pragma once
+
+#define MSG_FILE_NEW 1
+
+
+#define MSG_DEBUG_OBJVIEW_ADDTEST	50
+
+#define ID_OBJLISTVIEW 100
+#define ID_OBJLISTVIEW_FILTER 101

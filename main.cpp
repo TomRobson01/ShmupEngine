@@ -8,8 +8,92 @@
 #include "Objects/TRPlayer.h"
 #include "Objects/TRWorld.h"
 #include "Rendering/TextureLoader.h"
+#elif TREDITOR
+#include "Editor/EditorGUI.h"
 #endif
 
+
+#ifdef TREDITOR
+
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	switch (msg)
+	{
+	case WM_CREATE:
+		EditorGUI::QInstance()->Init(hwnd);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+
+	case WM_COMMAND:
+		switch (wp)
+		{
+		case MSG_FILE_NEW:
+			MessageBeep(MB_OK);
+			break;
+#ifdef _DEBUG
+		case MSG_DEBUG_OBJVIEW_ADDTEST:
+			EditorGUI::QInstance()->SendDebugListMessage();
+			break;
+#endif
+		default:
+			break;
+		}
+
+		// -------- HIWORD --------
+		switch (HIWORD(wp))
+		{
+		case EN_CHANGE:
+			switch (LOWORD(wp))
+			{
+			case ID_OBJLISTVIEW_FILTER:
+				MessageBeep(MB_OK);
+				break;
+			default:
+				break;
+				// End of EN_CHANGE - LOWORD
+			}
+			break;
+		default:
+			break;
+			// End of HIWORD
+		}
+		break;	// End of WM_COMMAND
+
+	default:
+		return DefWindowProcW(hwnd, msg, wp, lp);
+	}
+}
+
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow)
+{
+	WNDCLASSW wc = {0};
+
+	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hInstance = hInst;
+	wc.lpszClassName = L"WindowClass";
+	wc.lpfnWndProc = WindowProcedure;
+
+	if (!RegisterClassW(&wc))
+	{
+		MessageBox(NULL, L"Failed to register the window class", L"FATAL ERROR ON STARTUP", MB_ICONERROR);
+		return -1;
+	}
+
+	CreateWindowW(L"WindowClass", L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 256, 256, 1280, 720, NULL, NULL, NULL, NULL);
+
+	MSG msg = { 0 };
+	while (GetMessage(&msg, NULL, NULL, NULL))
+	{
+		TranslateMessage(&msg);
+		DispatchMessageW(&msg);
+	}
+
+	return 0;
+}
+#endif
 
 
 #ifdef TRGAME
@@ -19,15 +103,8 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 }
-#endif
-
 int main()
 {
-#ifdef TREDITOR
-	std::cout << "Hello, editor!";
-#endif
-
-#ifdef TRGAME
 	std::cout << "Hello, game!";
 
 	// Initialize our renderer and OpenGL by calling QInstance once.
@@ -70,6 +147,6 @@ int main()
 
 	TRWorld::QInstance()->UnloadWorld();
 	TRRenderer::QInstance().Shutdown();
-#endif
 	return 1;
 }
+#endif

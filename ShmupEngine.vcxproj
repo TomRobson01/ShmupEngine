@@ -179,7 +179,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)ShmupEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -213,7 +213,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)ShmupEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -277,6 +277,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Editor\EditorGUI.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="DebugWindows\imguiWindow.cpp" />
     <ClCompile Include="Libraries\imGUI\imgui.cpp" />
@@ -287,6 +288,7 @@
     <ClCompile Include="Libraries\imGUI\imgui_tables.cpp" />
     <ClCompile Include="Libraries\imGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Editor\ObjectView.cpp" />
     <ClCompile Include="Rendering\ShaderManagement.cpp" />
     <ClCompile Include="Rendering\TextureLoader.cpp" />
     <ClCompile Include="Physics\TRPhysics.cpp" />
@@ -305,6 +307,8 @@
   <ItemGroup>
     <ClInclude Include="DebugWindows\ImGuiDefines.h" />
     <ClInclude Include="DebugWindows\imguiWindow.h" />
+    <ClInclude Include="Editor\EditorDefines.h" />
+    <ClInclude Include="Editor\EditorGUI.h" />
     <ClInclude Include="Libraries\imGUI\imconfig.h" />
     <ClInclude Include="Libraries\imGUI\imgui.h" />
     <ClInclude Include="Libraries\imGUI\imgui_impl_glfw.h" />
@@ -314,6 +318,7 @@
     <ClInclude Include="Libraries\imGUI\imstb_rectpack.h" />
     <ClInclude Include="Libraries\imGUI\imstb_textedit.h" />
     <ClInclude Include="Libraries\imGUI\imstb_truetype.h" />
+    <ClInclude Include="Editor\ObjectView.h" />
     <ClInclude Include="Rendering\ShaderManagement.h" />
     <ClInclude Include="Rendering\stb-image.h" />
     <ClInclude Include="Rendering\TextureLoader.h" />
