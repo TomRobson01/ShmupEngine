@@ -1,2 +1,2 @@
-﻿  EditorGUI.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Editor\EditorGUI.cpp(50,4): error C2065: 'hWndListBox': undeclared identifier
+﻿  ObjectView.cpp
+  ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\EditorDebug\ShmupEngine.exe

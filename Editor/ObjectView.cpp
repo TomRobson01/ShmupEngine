@@ -2,11 +2,15 @@
 #include "EditorDefines.h"
 
 #include <windows.h>
+#include <vector>
 
 
 namespace 
 {
 	HWND hwnd;
+	HWND hwndFilter;
+	std::vector<LPCWSTR> currentEntries;
+	std::vector<LPCWSTR> validEntries;
 }
 
 ObjectView* ObjectView::instancePtr;
@@ -30,7 +34,7 @@ void ObjectView::Init(HWND ahwnd)
 	CreateWindowW(L"static", L"    Object List", WS_VISIBLE | WS_CHILD, 10, 10, 100, 50, ahwnd, NULL, NULL, NULL);
 
 	CreateWindowW(L"static", L"Filter", WS_VISIBLE | WS_CHILD, 20, 40, 40, 50, ahwnd, NULL, NULL, NULL);
-	CreateWindowW(L"Edit", L"...", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE | ES_AUTOHSCROLL, 60, 40, 240, 20, ahwnd, (HMENU)ID_OBJLISTVIEW_FILTER, NULL, NULL);
+	hwndFilter = CreateWindowW(L"Edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE | ES_AUTOHSCROLL, 60, 40, 240, 20, ahwnd, (HMENU)ID_OBJLISTVIEW_FILTER, NULL, NULL);
 
 	hwnd = CreateWindow(L"LISTBOX",
 		L"ObjectListBox",
@@ -50,8 +54,45 @@ void ObjectView::Init(HWND ahwnd)
 /// <param name="asName">The name this data will be displayed in the View as. Note: This cannot be the same as another item, and will display a warning.</param>
 void ObjectView::AddObject(LPCWSTR asName)
 {
-	SendMessage(hwnd, LB_ADDSTRING, 0, (LPARAM)asName);
-	SetFocus(hwnd);
+	currentEntries.push_back(asName);
+	SetFocus(hwnd); 
+}
+
+/// <summary>
+/// Filters through the current entries vector, and compares their string to the current text in the filter.
+/// This prepares the validEntries vector, which is used to display.
+/// </summary>
+/// <remarks> This will automatically redraw the list box - no need to call DrawLisBox() seperately. </remarks>
+void ObjectView::OnFilterChanged()
+{
+	// First, we need to collect the current string in the filter
+	TCHAR buff[1024];
+	GetWindowText(hwndFilter, buff, 1024);
+
+	// Now, for each character in buff, check each of the current entries match it to that point
+	validEntries = currentEntries;
+	int iCurrentIndex = 0;
+	for (TCHAR c : buff)
+	{
+		if (!c)
+			break;
+
+		for (LPCWSTR str : currentEntries)
+		{
+			if (str[iCurrentIndex] != c)
+			{
+				// Mismatch!
+				auto it = std::find(validEntries.begin(), validEntries.end(), str);
+				if (it != validEntries.end())
+				{
+					validEntries.erase(it);
+				}
+			}
+		}
+		iCurrentIndex++;
+	}
+
+	DrawListBox();
 }
 
 /// <summary>
@@ -61,6 +102,18 @@ void ObjectView::AddObject(LPCWSTR asName)
 HWND ObjectView::QHWND()
 {
 	return hwnd;
+}
+
+/// <summary>
+/// Clears the ListBox entries and adds each string from the validEntries list back in.
+/// </summary>
+void ObjectView::DrawListBox()
+{
+	SendMessage(hwnd, LB_RESETCONTENT, 0, 0);
+	for (LPCWSTR str : validEntries)
+	{
+		SendMessage(hwnd, LB_ADDSTRING, 0, (LPARAM)str);
+	}
 }
 
 

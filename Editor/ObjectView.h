@@ -9,7 +9,12 @@ public:
 	void Init(HWND ahwnd);
 	void AddObject(LPCWSTR asName);
 
+	void OnFilterChanged();
+
 	HWND QHWND();
+
+protected:
+	void DrawListBox();
 
 private:
 	ObjectView() {}

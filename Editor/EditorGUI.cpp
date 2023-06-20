@@ -37,6 +37,7 @@ void EditorGUI::SendDebugListMessage()
 	ObjectView::QInstance()->AddObject(L"How");
 	ObjectView::QInstance()->AddObject(L"Are");
 	ObjectView::QInstance()->AddObject(L"You?");
+	ObjectView::QInstance()->OnFilterChanged();
 }
 #endif // _DEBUG
 

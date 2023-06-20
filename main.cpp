@@ -10,6 +10,7 @@
 #include "Rendering/TextureLoader.h"
 #elif TREDITOR
 #include "Editor/EditorGUI.h"
+#include "Editor/ObjectView.h"
 #endif
 
 
@@ -48,7 +49,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 			switch (LOWORD(wp))
 			{
 			case ID_OBJLISTVIEW_FILTER:
-				MessageBeep(MB_OK);
+				ObjectView::QInstance()->OnFilterChanged();
 				break;
 			default:
 				break;
