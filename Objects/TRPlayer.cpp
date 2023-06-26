@@ -72,9 +72,6 @@ void TRPlayer::OnUpdate()
 
 void TRPlayer::OnFixedUpdate()
 {
-	// Check collisions
-	TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_ENEMY_PROJECTILE);
-
 	// Tick the shot cooldown up, and handle the current state of that
 	// We may want to replace this with a proper timer class later, depends on engine scope
 	if (!bCanShoot)
@@ -90,6 +87,9 @@ void TRPlayer::OnFixedUpdate()
 
 void TRPlayer::OnCollision(TRWorldObject* apOtherObject)
 {
+	if (!apOtherObject)
+		return;
+
 	switch (apOtherObject->QCollider()->QCollisionLayer())
 	{
 	case CollisionLayer::CL_ENEMY_PROJECTILE:

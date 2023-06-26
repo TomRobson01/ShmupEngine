@@ -34,6 +34,7 @@ public:
 		return pOut;
 	}
 
+	std::shared_ptr<TRWorldObject> GetWorldObjectByID(int aiID);
 	void RemoveWorldObject(int aiTargetID);
 
 private:

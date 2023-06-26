@@ -153,11 +153,11 @@ class TRPhysics
 public:
 	static TRPhysics* QInstance();
 
+	void InitCollisionThread();
+	void ShutdownCollisionThread();
+
 	void RegisterCollider(CollisionLayer aeTargetLayer, TRWorldObject* apCollider);
 	void UnRegisterCollider(TRWorldObject* apCollider);
-
-	bool QIsColliding(TRWorldObject* apColliderA, TRWorldObject* apColliderB);
-	bool QIsCollidingWithAnyInLayer(TRWorldObject* apCollider, CollisionLayer aeTargetlayer);
 
 private:
 	TRPhysics() {}

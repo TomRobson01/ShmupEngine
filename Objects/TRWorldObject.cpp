@@ -1,8 +1,15 @@
 #include "TRWorld.h"
+
 #include <iostream>
+#include <mutex>
 
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Rendering/TRRenderer.h"
+
+namespace 
+{
+	std::mutex m;
+};
 
 TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
 {
@@ -16,6 +23,11 @@ TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, f
 TRWorldObject::~TRWorldObject()
 {
 	TRPhysics::QInstance()->UnRegisterCollider(this);
+}
+
+void TRWorldObject::CallOnCollision(int aiCollidingObjectID)
+{
+	iCollidingObjectID = aiCollidingObjectID;
 }
 
 /// <summary>
@@ -46,11 +58,17 @@ void TRWorldObject::OnUpdate()
 /// </summary>
 void TRWorldObject::OnFixedUpdate()
 {
+	if (iCollidingObjectID > -1)
+	{
+		OnCollision(TRWorld::QInstance()->GetWorldObjectByID(iCollidingObjectID).get()); 
+		iCollidingObjectID = -1;
+	}
 }
 
 void TRWorldObject::OnCollision(TRWorldObject* apOtherObject)
 {
-
+	if (!apOtherObject)
+		return;
 }
 
 void TRWorldObject::Destroy()

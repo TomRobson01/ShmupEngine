@@ -13,7 +13,8 @@ public:
 	void		CallStart()			{ OnStart(); }
 	void		CallUpdate()		{ OnUpdate(); }
 	void		CallFixedUpdate()	{ OnFixedUpdate(); }
-	void		CallOnCollision(TRWorldObject* apOtherObject)	{ OnCollision(apOtherObject); }
+	void		CallOnCollision(int aiCollidingObjectID);
+	//void		CallOnCollision(TRWorldObject* apOtherObject)	{ OnCollision(apOtherObject); }
 
 	TRObject		QBaseObject()	{ return baseObject; }
 
@@ -36,5 +37,8 @@ protected:
 	TRObject baseObject;
 
 	int objID;
+
+private:
+	int iCollidingObjectID = -1;
 };
 

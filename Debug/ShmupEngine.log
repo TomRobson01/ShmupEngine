@@ -1,5 +1,4 @@
-﻿  TREnemy.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(74,37): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(119,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(128,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  TRPlayer.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(137,54): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(138,54): warning C4305: '*=': truncation from 'double' to 'float'
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe

@@ -67,6 +67,11 @@ void TRWorld::UnloadWorld()
 	worldObjects.clear();
 }
 
+std::shared_ptr<TRWorldObject> TRWorld::GetWorldObjectByID(int aiID)
+{
+	return worldObjects[aiID];
+}
+
 /// <summary>
 /// Mark an object to be deleted at the beginning of next frame. This is the safest way of deleting an object.
 /// </summary>

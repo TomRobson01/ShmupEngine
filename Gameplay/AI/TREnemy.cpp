@@ -61,8 +61,8 @@ void TREnemy::OnUpdate()
 void TREnemy::OnFixedUpdate()
 {
 	// Collision checks
-	TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER);
-	TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER_PROJECTILE);
+	//TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER);
+	//TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER_PROJECTILE);
 
 	// Tick projectile behavior
 	if (fTimeSinceFire > fCurrentFireCooldown)
@@ -83,6 +83,9 @@ void TREnemy::OnFixedUpdate()
 /// <param name="apOtherObject">The other object we collided with</param>
 void TREnemy::OnCollision(TRWorldObject* apOtherObject)
 {
+	if (!apOtherObject)
+		return;
+
 	switch (apOtherObject->QCollider()->QCollisionLayer())
 	{
 	case CollisionLayer::CL_PLAYER_PROJECTILE:
