@@ -322,6 +322,7 @@
     <ClInclude Include="Rendering\TRRenderer.h" />
     <ClInclude Include="DebugWindows\TestImGUIWindow.h" />
     <ClInclude Include="Gameplay\AI\TREnemy.h" />
+    <ClInclude Include="TRDefines.h" />
     <ClInclude Include="TRInput.h" />
     <ClInclude Include="TRLogger.h" />
     <ClInclude Include="DebugWindows\TRLoggerImGui.h" />

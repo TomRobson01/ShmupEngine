@@ -23,9 +23,9 @@ public:
 	};
 
 
-	unsigned int QTexture() { return texture; };
-	glm::vec3 QPosition()	{ return position; };
-	float QRotation()		{ return rotation; };
+	unsigned int const QTexture() { return texture; };
+	glm::vec3 const QPosition()		{ return position; };
+	float const QRotation()			{ return rotation; };
 
 private:
 	unsigned int texture;

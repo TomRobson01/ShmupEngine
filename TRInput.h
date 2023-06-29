@@ -37,21 +37,21 @@ enum TRInputKey
 class TRInput
 {
 public:
-	static TRInput* QInstance();
+	static TRInput* const QInstance();
 
 	void Init(GLFWwindow* apWindow);
 	void PollInputs();
 
-	bool QKeyPressed(TRInputKey aeTargetKey);
-	bool QKey(TRInputKey aeTargetKey);
-	bool QKeyReleased(TRInputKey aeTargetKey);
+	bool const QKeyPressed(TRInputKey aeTargetKey);
+	bool const QKey(TRInputKey aeTargetKey);
+	bool const QKeyReleased(TRInputKey aeTargetKey);
 
-	bool QMousePressed(int aiMouseTarget);
-	bool QMouseHeld(int aiMouseTarget);
-	bool QMouseReleased(int aiMouseTarget);
+	bool const QMousePressed(int aiMouseTarget);
+	bool const QMouseHeld(int aiMouseTarget);
+	bool const QMouseReleased(int aiMouseTarget);
 
-	double QMousePosX() { return mouseXPos; };
-	double QMousePosY() { return mouseYPos; };
+	double const QMousePosX() { return mouseXPos; };
+	double const QMousePosY() { return mouseYPos; };
 
 private:
 	TRInput() {}

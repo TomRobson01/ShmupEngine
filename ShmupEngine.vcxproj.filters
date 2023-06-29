@@ -167,5 +167,8 @@
     <ClInclude Include="Gameplay\AI\TREnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TRDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

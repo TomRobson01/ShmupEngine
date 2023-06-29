@@ -73,10 +73,10 @@ public:
 
 	float Rotate(float afDelta) { rotation += afDelta; return rotation; };
 
-	float QPositionX() { return x; }
-	float QPositionY() { return y; }
-	float QPositionZ() { return z; }
-	float QRotation() { return rotation; };
+	float const QPositionX() { return x; }
+	float const QPositionY() { return y; }
+	float const QPositionZ() { return z; }
+	float const QRotation()		{ return rotation; };
 
 protected:
 	float x, y, z;
@@ -129,12 +129,12 @@ public:
 		y = afY;
 	}
 
-	float QPosX()	{ return x; }
-	float QPosY()	{ return y; }
-	float QRadius() { return fRadius; }
+	float const QPosX()		{ return x; }
+	float const QPosY()		{ return y; }
+	float const QRadius()	{ return fRadius; }
 
 	void SetID(int aID) { ID = aID; }
-	int  QID()			{ return ID; }
+	int  const QID()	{ return ID; }
 
 	CollisionLayer QCollisionLayer() { return colLayer; }
 
@@ -151,7 +151,7 @@ private:
 class TRPhysics
 {
 public:
-	static TRPhysics* QInstance();
+	static TRPhysics* const QInstance();
 
 	void InitCollisionThread();
 	void ShutdownCollisionThread();

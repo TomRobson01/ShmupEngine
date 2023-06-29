@@ -21,7 +21,7 @@ public:
 
 	void DamageHealth(float afDamage);
 
-	ENEMY_MOTION_TYPE QMotionType() { return motionType; }
+	ENEMY_MOTION_TYPE const QMotionType() { return motionType; }
 
 protected:
 	void FireShot();

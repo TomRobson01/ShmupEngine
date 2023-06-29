@@ -26,7 +26,7 @@ namespace
 }
 
 TRPlayer* TRPlayer::instancePtr;
-TRPlayer* TRPlayer::QInstance()
+TRPlayer* const TRPlayer::QInstance()
 {
 	return instancePtr;
 }

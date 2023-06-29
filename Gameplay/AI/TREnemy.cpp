@@ -60,10 +60,6 @@ void TREnemy::OnUpdate()
 /// </summary>
 void TREnemy::OnFixedUpdate()
 {
-	// Collision checks
-	//TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER);
-	//TRPhysics::QInstance()->QIsCollidingWithAnyInLayer(this, CollisionLayer::CL_PLAYER_PROJECTILE);
-
 	// Tick projectile behavior
 	if (fTimeSinceFire > fCurrentFireCooldown)
 	{

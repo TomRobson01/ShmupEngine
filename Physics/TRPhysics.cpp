@@ -18,7 +18,7 @@ namespace
 }
 
 TRPhysics* TRPhysics::instancePtr;
-TRPhysics* TRPhysics::QInstance()
+TRPhysics* const TRPhysics::QInstance()
 {
 	if (instancePtr == nullptr)
 	{

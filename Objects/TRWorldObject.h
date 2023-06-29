@@ -3,6 +3,8 @@
 #include "TRObject.h"
 #include "Physics/TRPhysics.h"
 
+#include <ctime>
+
 class TRWorldObject : public TRObject
 {
 public:
@@ -14,23 +16,24 @@ public:
 	void		CallUpdate()		{ OnUpdate(); }
 	void		CallFixedUpdate()	{ OnFixedUpdate(); }
 	void		CallOnCollision(int aiCollidingObjectID);
-	//void		CallOnCollision(TRWorldObject* apOtherObject)	{ OnCollision(apOtherObject); }
 
-	TRObject		QBaseObject()	{ return baseObject; }
+	TRObject		const QBaseObject() 	{ return baseObject; }
 
-	Transform*		QTransform()	{ return transform; }
-	CircleCollider*	QCollider()		{ return collider;	}
+	Transform*		const QTransform()		{ return transform; }
+	CircleCollider* const QCollider()		{ return collider;	}
+	unsigned int	const QAnimIndex()		{ return uiCurrentAnimIndex; }
 
 	void		Destroy();
 
-	int QID() { return objID; }
+	int QID() const { return objID; }
 
 protected:
 	virtual void OnStart();
 	virtual void OnUpdate();
 	virtual void OnFixedUpdate();
-
 	virtual void OnCollision(TRWorldObject* apOtherObject);
+
+	void OnAnimationUpdate();
 
 	Transform* transform;
 	CircleCollider* collider;
@@ -40,5 +43,7 @@ protected:
 
 private:
 	int iCollidingObjectID = -1;
+	unsigned int uiCurrentAnimIndex = 0;
+	clock_t lastAnimationUpdate;
 };
 

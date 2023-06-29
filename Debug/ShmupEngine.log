@@ -1,4 +1,3 @@
-﻿  TRPlayer.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(137,54): warning C4305: '*=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(138,54): warning C4305: '*=': truncation from 'double' to 'float'
+﻿  main.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe

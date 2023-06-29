@@ -30,23 +30,16 @@ int main()
 	std::cout << "Hello, game!";
 
 	// Initialize our renderer and OpenGL by calling QInstance once.
-	TRRenderer::QInstance();
 	GLFWwindow* window = TRRenderer::QInstance().QWindow();
 
 	// Load the world
 	// --------------------------
 
-	// First, we forward load all of our world objects that we may need for the given level - this will be handled from TRWorld once we have serialization
-	TRObject ObjBricks("Brick", "Assets/Textures/T_Bricks.png");
-	TRObject ObjBricksIvy("Brick Ivy", "Assets/Textures/T_Bricks_Ivy.png");
-	TRObject ObjPlayer("Player", "Assets/Textures/T_Temp_Player_Sprite.png");
-	TRObject ObjEnemy("Enemy", "Assets/Textures/T_Temp_Player_Sprite.png");
-
 	// We always instantiate our player via code, as they're a given. However, we'll do this via a TRWorld method later
-	TRWorld::QInstance()->InstanciateObject<TRPlayer>(ObjPlayer, Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
+	TRWorld::QInstance()->InstanciateObject<TRPlayer>(TRWorld::QInstance()->QObjPlayer(), Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
 
-	for (int i = 0; i < 0; i++)
-		TRWorld::QInstance()->InstanciateObject<TREnemy>(ObjEnemy, Transform(5, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
+	for (int i = 0; i < 1; i++)
+		TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemy(), Transform(5, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
 
 
 	// Wireframe mode

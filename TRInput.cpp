@@ -30,7 +30,7 @@ namespace
 
 
 TRInput* TRInput::instancePtr;
-TRInput* TRInput::QInstance()
+TRInput* const TRInput::QInstance()
 {
 	if (instancePtr == nullptr)
 	{
@@ -104,28 +104,28 @@ void TRInput::PollInputs()
 
 ///<summary> Checks if the given key is within the recently pressed keys list.</summary>
 ///<param=aeTargetKey> The key we want to query. </param>
-bool TRInput::QKeyPressed(TRInputKey aeTargetKey)
+bool const TRInput::QKeyPressed(TRInputKey aeTargetKey)
 {
 	return std::find(vPressedInputKeys.begin(), vPressedInputKeys.end(), aeTargetKey) != vPressedInputKeys.end();
 }
 
 ///<summary> Checks if the given key is within the currently pressed keys list.</summary>
 ///<param=aeTargetKey> The key we want to query. </param>
-bool TRInput::QKey(TRInputKey aeTargetKey)
+bool const TRInput::QKey(TRInputKey aeTargetKey)
 {
 	return std::find(vCurrentInputKeys.begin(), vCurrentInputKeys.end(), aeTargetKey) != vCurrentInputKeys.end();
 }
 
 ///<summary> Checks if the given key is within the recently released keys list.</summary>
 ///<param=aeTargetKey> The key we want to query. </param>
-bool TRInput::QKeyReleased(TRInputKey aeTargetKey)
+bool const TRInput::QKeyReleased(TRInputKey aeTargetKey)
 {
 	return std::find(vReleasedInputKeys.begin(), vReleasedInputKeys.end(), aeTargetKey) != vReleasedInputKeys.end();
 }
 
 ///<summary> Checks the given mouse buttons datum to see if it was pressed this frame.</summary>
 ///<param=aeTargetKey> ID of the mouse button we wish to query. Use TRMOUSE_LEFT or TRMOUSE_RIGHT </param>
-bool TRInput::QMousePressed(int aiMouseTarget)
+bool const TRInput::QMousePressed(int aiMouseTarget)
 {
 	bool bRetVal = false;
 	switch (aiMouseTarget)
@@ -142,7 +142,7 @@ bool TRInput::QMousePressed(int aiMouseTarget)
 
 ///<summary> Checks the given mouse buttons datum to see if is currently held.</summary>
 ///<param=aeTargetKey> ID of the mouse button we wish to query. Use TRMOUSE_LEFT or TRMOUSE_RIGHT </param>
-bool TRInput::QMouseHeld(int aiMouseTarget)
+bool const TRInput::QMouseHeld(int aiMouseTarget)
 {
 	bool bRetVal = false;
 	switch (aiMouseTarget)
@@ -160,7 +160,7 @@ bool TRInput::QMouseHeld(int aiMouseTarget)
 
 ///<summary> Checks the given mouse buttons datum to see if it was released this frame.</summary>
 ///<param=aeTargetKey> ID of the mouse button we wish to query. Use TRMOUSE_LEFT or TRMOUSE_RIGHT </param>
-bool TRInput::QMouseReleased(int aiMouseTarget)
+bool const TRInput::QMouseReleased(int aiMouseTarget)
 {
 	bool bRetVal = false;
 	switch (aiMouseTarget)

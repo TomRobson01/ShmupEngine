@@ -38,7 +38,7 @@ public:
 	void Log(const char* asLog, LogSeverity aeSeverity = LogSeverity::TR_DEFAULT);
 #endif
 
-	static TRLogger* QInstance();
+	static TRLogger* const QInstance();
 
 
 private:

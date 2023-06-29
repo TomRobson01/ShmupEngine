@@ -3,15 +3,14 @@
 #include <map>
 #include <memory>
 
+#include "TRDefines.h"
 #include "TRWorldObject.h"
 #include "Rendering/TRRenderer.h"
-
-#define FIXED_DELTA_TIME 0.06		
 
 class TRWorld
 {
 public:
-	static TRWorld* QInstance();
+	static TRWorld* const QInstance();
 
 	void UpdateWorld();
 	void UnloadWorld();
@@ -37,13 +36,25 @@ public:
 	std::shared_ptr<TRWorldObject> GetWorldObjectByID(int aiID);
 	void RemoveWorldObject(int aiTargetID);
 
+	TRObject QObjPlayer()	{ return ObjPlayer;		}
+	TRObject QObjEnemy()	{ return ObjEnemy;		}
+
 private:
-	TRWorld() {}
+	TRWorld() 
+	{
+		ObjPlayer	= TRObject("Player",	"Assets/Textures/T_Temp_Player_Sprite.png");
+		ObjEnemy	= TRObject("Enemy",		"Assets/Textures/T_Temp_Player_Sprite.png");
+	}
 
 	static TRWorld* instancePtr;
 
 	std::map<int, std::shared_ptr<TRWorldObject>> worldObjects;
 	int IDGenerator = 0;
+
+	// Usable TRObjects are defined here. You will need to define them in the TRWorld constructor, and add an accessory for them in the public scope
+	TRObject ObjPlayer;
+	TRObject ObjEnemy;
+	// End of TRObject defs ------------------
 };
 
 

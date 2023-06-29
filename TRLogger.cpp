@@ -2,7 +2,7 @@
 #include "DebugWindows/TRLoggerImGui.h"
 
 TRLogger* TRLogger::instancePtr;
-TRLogger* TRLogger::QInstance()
+TRLogger* const TRLogger::QInstance()
 {
 	if (instancePtr == nullptr)
 	{

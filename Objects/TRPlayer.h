@@ -7,7 +7,7 @@ class TRPlayer : public TRWorldObject
 public:
 	TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID);
 	~TRPlayer();
-	static TRPlayer* QInstance();
+	static TRPlayer* const QInstance();
 
 	void OnStart() override;
 	void OnUpdate() override;
