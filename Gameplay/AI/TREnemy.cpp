@@ -1,5 +1,5 @@
 #include "TREnemy.h"
-
+#include "TRWaveManager.h"
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Objects/TRPlayer.h"
 #include "Objects/TRProjectile.h"
@@ -13,7 +13,6 @@ namespace
 
 	TRPlayer* pPlayer;
 
-	TRObject ObjProjectile;
 	ImVec2 vFireCooldownRange = ImVec2(4, 10);
 	float fCurrentFireCooldown = 0.0f;
 	float fTimeSinceFire = 0.0f;
@@ -24,7 +23,8 @@ TREnemy::TREnemy(TRObject& aBaseObj, Transform atInitialTransform, float afColli
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
-	collider = new CircleCollider(afColliderRadius, aeLayer);
+	fCollisionRadius = afColliderRadius;
+	eCollisionLayer = aeLayer;
 	objID = aiID;
 
 	motionType = ENEMY_MOTION_TYPE::MT_PROGRESS;
@@ -40,7 +40,6 @@ TREnemy::~TREnemy()
 /// </summary>
 void TREnemy::OnStart()
 {
-	ObjProjectile = TRObject("Projectile", "Assets/Textures/T_Temp_Player_Sprite.png");
 	TRLoggerImGui::QInstance()->AddLog("New enemy started!", LogSeverity::TR_DEFAULT);
 	this->TRWorldObject::OnStart();
 }
@@ -73,6 +72,8 @@ void TREnemy::OnFixedUpdate()
 	this->TRWorldObject::OnFixedUpdate();
 }
 
+
+bool bDone = false;
 /// <summary>
 /// Called whenever this object collides with another
 /// </summary>
@@ -82,12 +83,17 @@ void TREnemy::OnCollision(TRWorldObject* apOtherObject)
 	if (!apOtherObject)
 		return;
 
-	switch (apOtherObject->QCollider()->QCollisionLayer())
+	switch (apOtherObject->QCollisionLayer())
 	{
 	case CollisionLayer::CL_PLAYER_PROJECTILE:
 		// Destroy the projectile, and tick health
 		TRWorld::QInstance()->RemoveWorldObject(apOtherObject->QID());
 		DamageHealth(2);
+		break;
+	case CollisionLayer::CL_PLAYER:
+		if (apOtherObject->QCollisionLayer() == CollisionLayer::CL_ENEMY_SUICIDER)
+			TRWaveManager::QInstance()->OnEnemyDeath();
+			Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
 		break;
 	default:
 		break;
@@ -104,16 +110,23 @@ void TREnemy::DamageHealth(float afDamage)
 	if (fHealth <= 0)
 	{
 		TRLoggerImGui::QInstance()->AddLog("Enemy died", LogSeverity::TR_DEFAULT);
-		TRWorld::QInstance()->RemoveWorldObject(QID());
+		TRWaveManager::QInstance()->OnEnemyDeath();
+		Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
 	}
 }
 
 /// <summary>
-/// Fire a projectile, and reset the cooldown timer.
+/// Fire projectiles from each slot, and reset the cooldown timer.
 /// </summary>
 void TREnemy::FireShot()
 {
-	TRWorld::QInstance()->InstanciateObject<TRProjectile>(ObjProjectile, *transform, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-10.0f, 0.0f, 1.0f);
+	for (std::tuple<float, float> pos : vFirePoints)
+	{
+		Transform t = *transform;
+		t.Translate(std::get<0>(pos), std::get<1>(pos), 0, 0);
+		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-10.0f, 0.0f, 1.0f);
+	}
+		
 	fTimeSinceFire = 0;
 	float t = rand() % 1;
 	fCurrentFireCooldown = vFireCooldownRange.x + t * (vFireCooldownRange.y, vFireCooldownRange.x);

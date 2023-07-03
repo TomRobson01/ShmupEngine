@@ -10,7 +10,7 @@ class TRObject
 public:
 	TRObject() = default;
 	TRObject(const char* asName, const char* asTextureName);
-	TRObject(const char* asName, const char* asTextures[]);
+	TRObject(const char* asName, std::vector<const char*> avtextures);
 	~TRObject();
 
 	unsigned int const QTexture(unsigned int aiIndex = 0) { return aiIndex < vAnimTextures.size() ? vAnimTextures[aiIndex] : -1; }

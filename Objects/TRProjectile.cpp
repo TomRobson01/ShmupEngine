@@ -9,7 +9,8 @@ TRProjectile::TRProjectile(TRObject& aBaseObj, Transform atInitialTransform, flo
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
-	collider = new CircleCollider(afColliderRadius, aeLayer);
+	fCollisionRadius = afColliderRadius;
+	eCollisionLayer = aeLayer;
 	objID = aiID;
 }
 

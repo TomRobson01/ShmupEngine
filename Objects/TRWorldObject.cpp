@@ -11,7 +11,9 @@ TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, f
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
-	collider = new CircleCollider(afColliderRadius, aeLayer);
+	//collider = new CircleCollider(afColliderRadius, aeLayer);
+	eCollisionLayer = aeLayer;
+	fCollisionRadius = afColliderRadius;
 	objID = aiID;
 }
 
@@ -49,8 +51,9 @@ void TRWorldObject::OnUpdate()
 		transform->QRotation(),
 		baseObject.QTexture(uiCurrentAnimIndex));
 
-	collider->SetPosition(transform->QPositionX(), transform->QPositionY());
-
+	//collider->SetPosition(transform->QPositionX(), transform->QPositionY());
+	fCollisionX = transform->QPositionX();
+	fCollisionY = transform->QPositionY();
 }
 
 /// <summary>
@@ -94,6 +97,10 @@ void TRWorldObject::OnAnimationUpdate()
 	if (uiCurrentAnimIndex >= baseObject.QTexturesLoaded())
 	{
 		uiCurrentAnimIndex = 0;
+		if (!bLoopsAnim)
+		{
+			Destroy();
+		}
 	}
 }
 
@@ -103,4 +110,13 @@ void TRWorldObject::OnAnimationUpdate()
 void TRWorldObject::Destroy()
 {
 	TRWorld::QInstance()->RemoveWorldObject(QID());
+}
+
+/// <summary>
+/// Removes the object from the world, with an explosion!.
+/// </summary>
+void TRWorldObject::Destroy(TRObject aoExplosionObject)
+{
+	TRWorld::QInstance()->InstanciateObject<TRWorldObject>(aoExplosionObject, *QTransform(), 2.0f, eExplosionCollisionLayer)->SetAnimLoop(false);
+	Destroy();
 }

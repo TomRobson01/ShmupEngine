@@ -5,6 +5,8 @@
 #include <ctime>
 #include <vector>
 
+#include "Gameplay/AI/TRWaveManager.h"
+
 
 namespace 
 {
@@ -27,6 +29,7 @@ TRWorld* const TRWorld::QInstance()
 /// </summary>
 void TRWorld::UpdateWorld()
 {
+
 	// Get the time since last Update tick
 	const clock_t cCurrentClock = clock();
 	float fTimeSinceFixedUpdate = cCurrentClock - lastFixedUpdateTime;
@@ -39,13 +42,15 @@ void TRWorld::UpdateWorld()
 	// Before updating anything remove any object we marked for deferred removal
 	for (int i : garbageObjCollection)
 	{
+		TRWorld::QInstance()->objLock.lock();
 		worldObjects.erase(i);
+		TRWorld::QInstance()->objLock.unlock();
 	}
-	garbageObjCollection.clear();
 
 	// Send CallUpdate() to every object, and then if it's a FixedUpdate frame, send CallFixedUpdate()
 	for (int i = 0; i < worldObjects.size(); i++)
 	{
+		TRWorld::QInstance()->objLock.lock();
 		if (worldObjects[i])
 		{
 			worldObjects[i]->CallUpdate();
@@ -54,7 +59,14 @@ void TRWorld::UpdateWorld()
 				worldObjects[i]->CallFixedUpdate();
 			}
 		}
+		TRWorld::QInstance()->objLock.unlock();
 	}
+
+	if (fTimeSinceFixedUpdate >= FIXED_UPDATE_TICKS)
+	{
+		TRWaveManager::QInstance()->Update();
+	}
+
 }
 
 /// <summary>

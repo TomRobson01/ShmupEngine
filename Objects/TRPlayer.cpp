@@ -21,8 +21,6 @@ namespace
 
 	int iTicksSinceShot		= 0;
 	bool bCanShoot			= false;
-
-	TRObject ObjProjectile;
 }
 
 TRPlayer* TRPlayer::instancePtr;
@@ -36,7 +34,8 @@ TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, float afCol
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
-	collider = new CircleCollider(afColliderRadius, aeLayer);
+	fCollisionRadius = afColliderRadius;
+	eCollisionLayer = aeLayer;
 	objID = aiID;
 	instancePtr = this;
 }
@@ -47,7 +46,6 @@ TRPlayer::~TRPlayer()
 
 void TRPlayer::OnStart()
 {
-	ObjProjectile = TRObject("Projectile", "Assets/Textures/T_Temp_Player_Sprite.png");
 	QTransform()->SetClamp(vPlayerXClamp.x, vPlayerXClamp.y, vPlayerYClamp.x, vPlayerYClamp.y);
 
 	TRLoggerImGui::QInstance()->AddLog("New player started!", LogSeverity::TR_DEFAULT);
@@ -90,8 +88,9 @@ void TRPlayer::OnCollision(TRWorldObject* apOtherObject)
 	if (!apOtherObject)
 		return;
 
-	switch (apOtherObject->QCollider()->QCollisionLayer())
+	switch (apOtherObject->QCollisionLayer())
 	{
+	case CollisionLayer::CL_ENEMY_SUICIDER:
 	case CollisionLayer::CL_ENEMY_PROJECTILE:
 		TRWorld::QInstance()->RemoveWorldObject(apOtherObject->QID());
 		TRLoggerImGui::QInstance()->AddLog("Player hit!", LogSeverity::TR_DEFAULT);
@@ -143,7 +142,7 @@ void TRPlayer::CalculateTargetVelocity()
 /// </summary>
 void TRPlayer::HandleShotFired()
 {
-	TRWorld::QInstance()->InstanciateObject<TRProjectile>(ObjProjectile, *transform, 0.5f, CollisionLayer::CL_PLAYER_PROJECTILE)->InitializeProjectileData(10.0f, 0.0f, 1.0f);
+	TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjPlayerProjectile(), *transform, 0.5f, CollisionLayer::CL_PLAYER_PROJECTILE)->InitializeProjectileData(10.0f, 0.0f, 5.0f);
 	bCanShoot = false;
 	iTicksSinceShot = 0;
 }

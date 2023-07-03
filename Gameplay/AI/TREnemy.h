@@ -1,6 +1,9 @@
 #pragma once
 #include "Objects/TRWorldObject.h"
 
+#include<tuple>
+#include <vector>
+
 enum class ENEMY_MOTION_TYPE
 {
 	MT_PROGRESS,
@@ -21,6 +24,9 @@ public:
 
 	void DamageHealth(float afDamage);
 
+	void SetMotionType(ENEMY_MOTION_TYPE aeMotionType)	{ motionType = aeMotionType; }
+	void AddFirePoint(float aiX, float aiY)				{ vFirePoints.push_back(std::make_tuple(aiX, aiY)); }
+
 	ENEMY_MOTION_TYPE const QMotionType() { return motionType; }
 
 protected:
@@ -29,6 +35,8 @@ protected:
 
 private:
 	TREnemy() {}
+
+	std::vector<std::tuple<float, float>> vFirePoints;
 
 	ENEMY_MOTION_TYPE motionType;
 };

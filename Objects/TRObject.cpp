@@ -13,12 +13,12 @@ TRObject::TRObject(const char* asName, const char* asTextureName)
 	vAnimTextures.push_back(TextureLoader::QInstance().RequestTexture(asTextureName));
 }
 
-TRObject::TRObject(const char* asName, const char* asTextures[])
+TRObject::TRObject(const char* asName, std::vector<const char*> avtextures)
 {
-	const int iTexturesToRegister = sizeof(asTextures) / sizeof(const char*);
-	for (int i = 0; i <= iTexturesToRegister; i++)
+	const int iTexturesToRegister = avtextures.size();
+	for (int i = 0; i < iTexturesToRegister; i++)
 	{
-		vAnimTextures.push_back(TextureLoader::QInstance().RequestTexture(asTextures[i]));
+		vAnimTextures.push_back(TextureLoader::QInstance().RequestTexture(avtextures[i]));
 	}
 }
 

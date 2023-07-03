@@ -38,10 +38,6 @@ int main()
 	// We always instantiate our player via code, as they're a given. However, we'll do this via a TRWorld method later
 	TRWorld::QInstance()->InstanciateObject<TRPlayer>(TRWorld::QInstance()->QObjPlayer(), Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
 
-	for (int i = 0; i < 1; i++)
-		TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemy(), Transform(5, 0, 0, 0), 1.0f, CollisionLayer::CL_ENEMY);
-
-
 	// Wireframe mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FLAT);	// GL_FLAT = normal
 												// GL_LINE = wireframe
