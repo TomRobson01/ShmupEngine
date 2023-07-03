@@ -1,29 +1,5 @@
 ﻿  TREnemy.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(69,37): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(131,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(140,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  TRWaveManager.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(40,28): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(41,26): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(67,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  TRPlayer.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(136,54): warning C4305: '*=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(137,54): warning C4305: '*=': truncation from 'double' to 'float'
-  TRProjectile.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRProjectile.cpp(28,62): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRProjectile.cpp(28,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRProjectile.cpp(34,32): warning C4305: '+=': truncation from 'double' to 'float'
-  TRWorld.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(35,30): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(51,20): warning C4018: '<': signed/unsigned mismatch
-  TRWorldObject.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Libraries\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorldObject.cpp(66,38): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-  TRPhysics.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Physics\TRPhysics.cpp(79,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Physics\TRPhysics.cpp(120,22): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
-  Generating Code...
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(65,37): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(135,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(144,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe

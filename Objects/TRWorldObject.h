@@ -13,9 +13,10 @@ public:
 	TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID);
 	~TRWorldObject();
 
-	void		CallStart()			{ OnStart(); }
-	void		CallUpdate()		{ OnUpdate(); }
-	void		CallFixedUpdate()	{ OnFixedUpdate(); }
+	void		CallStart()				{ OnStart(); }
+	void		CallUpdate()			{ OnUpdate(); }
+	void		CallFixedUpdate()		{ OnFixedUpdate(); }
+	void		CallAnimationUpdate()	{ OnAnimationUpdate(); }
 	void		CallOnCollision(int aiCollidingObjectID);
 
 	TRObject		const QBaseObject() 		{ return baseObject; }

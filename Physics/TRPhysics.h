@@ -121,39 +121,6 @@ struct CollisionData
 	int ID;
 };
 
-/// <summary>
-/// Class containing data for a simple, radial collider
-/// </summary>
-//class CircleCollider
-//{
-//public:
-//	CircleCollider(float afRadius, CollisionLayer aeLayer = CollisionLayer::CL_DEFAULT);
-//	CircleCollider(float ax, float ay, float afRadius, CollisionLayer aeLayer = CollisionLayer::CL_DEFAULT);
-//
-//	void SetPosition(float afX, float afY)
-//	{
-//		x = afX;
-//		y = afY;
-//	}
-//
-//	float const QPosX()		{ return x; }
-//	float const QPosY()		{ return y; }
-//	float const QRadius()	{ return fRadius; }
-//
-//	void SetID(int aID) { ID = aID; }
-//	int  const QID()	{ return ID; }
-//
-//	CollisionLayer QCollisionLayer() { return colLayer; }
-//
-//protected:
-//	float x, y;
-//	float fRadius;
-//	CollisionLayer colLayer = CollisionLayer::CL_DEFAULT;
-//
-//private:
-//	int ID;
-//};
-
 
 class TRPhysics
 {

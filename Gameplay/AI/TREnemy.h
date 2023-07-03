@@ -24,6 +24,8 @@ public:
 
 	void DamageHealth(float afDamage);
 
+	void SetHealth(float afHealth)						{ fHealth = afHealth; }
+	void SetMoveSpeed(float afSpeed)					{ fMoveSpeed = afSpeed; }
 	void SetMotionType(ENEMY_MOTION_TYPE aeMotionType)	{ motionType = aeMotionType; }
 	void AddFirePoint(float aiX, float aiY)				{ vFirePoints.push_back(std::make_tuple(aiX, aiY)); }
 
@@ -39,5 +41,10 @@ private:
 	std::vector<std::tuple<float, float>> vFirePoints;
 
 	ENEMY_MOTION_TYPE motionType;
+
+	float fHealth = 10.0f;
+	float fCurrentFireCooldown = 0.0f;
+	float fTimeSinceFire = 0.0f;
+	float fMoveSpeed = 1.0f;
 };
 

@@ -5,17 +5,13 @@
 #include "Objects/TRProjectile.h"
 #include "Objects/TRWorld.h"
 
+#include <iostream>
+
 namespace
 {
 	ImVec2 vWantDir		= ImVec2(-1, 0);
-	float fMoveSpeed	= 1.0f;
-	float fHealth		= 10.0f;
-
 	TRPlayer* pPlayer;
-
 	ImVec2 vFireCooldownRange = ImVec2(4, 10);
-	float fCurrentFireCooldown = 0.0f;
-	float fTimeSinceFire = 0.0f;
 }
 
 TREnemy::TREnemy(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
@@ -67,6 +63,13 @@ void TREnemy::OnFixedUpdate()
 	else
 	{
 		fTimeSinceFire += FIXED_DELTA_TIME;
+	}
+
+	if (transform->QPositionX() <= -25)
+	{
+		// Off the end, despawn
+		TRWaveManager::QInstance()->OnEnemyDeath(true);
+		Destroy();
 	}
 
 	this->TRWorldObject::OnFixedUpdate();
@@ -124,12 +127,12 @@ void TREnemy::FireShot()
 	{
 		Transform t = *transform;
 		t.Translate(std::get<0>(pos), std::get<1>(pos), 0, 0);
-		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-10.0f, 0.0f, 1.0f);
+		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-10.0f, 0.0f, 5.0f);
 	}
 		
 	fTimeSinceFire = 0;
 	float t = rand() % 1;
-	fCurrentFireCooldown = vFireCooldownRange.x + t * (vFireCooldownRange.y, vFireCooldownRange.x);
+	fCurrentFireCooldown = vFireCooldownRange.x + t * (vFireCooldownRange.y - vFireCooldownRange.x);
 }
 
 /// <summary>

@@ -10,6 +10,7 @@
 
 namespace 
 {
+	clock_t lastAnimationUpdate;
 	clock_t lastFixedUpdateTime;
 	std::vector<int> garbageObjCollection;
 }

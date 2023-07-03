@@ -1,6 +1,7 @@
 #include "TRWorld.h"
 
 #include <iostream>
+#include <memory>
 
 #include "TRDefines.h"
 #include "DebugWindows/TRLoggerImGui.h"
@@ -11,10 +12,12 @@ TRWorldObject::TRWorldObject(TRObject& aBaseObj, Transform atInitialTransform, f
 	baseObject = aBaseObj;
 	transform = new Transform();
 	transform->Translate(atInitialTransform.QPositionX(), atInitialTransform.QPositionY(), atInitialTransform.QPositionZ(), atInitialTransform.QRotation());
-	//collider = new CircleCollider(afColliderRadius, aeLayer);
 	eCollisionLayer = aeLayer;
 	fCollisionRadius = afColliderRadius;
 	objID = aiID;
+
+	const clock_t cCurrentClock = clock();
+	lastAnimationUpdate = cCurrentClock;
 }
 
 TRWorldObject::~TRWorldObject()
@@ -64,7 +67,7 @@ void TRWorldObject::OnFixedUpdate()
 	// Check if enough time has elapsed since the last animation update
 	const clock_t cCurrentClock = clock();
 	float fTimeSinceLastAnimationUpdate = cCurrentClock - lastAnimationUpdate;
-	if (fTimeSinceLastAnimationUpdate > (60 / ANIMATION_FPS) * FIXED_UPDATE_TICKS)
+	if (fTimeSinceLastAnimationUpdate > ((60.0f / ANIMATION_FPS) * FIXED_UPDATE_TICKS))
 	{
 		OnAnimationUpdate();
 		lastAnimationUpdate = cCurrentClock;
@@ -117,6 +120,7 @@ void TRWorldObject::Destroy()
 /// </summary>
 void TRWorldObject::Destroy(TRObject aoExplosionObject)
 {
-	TRWorld::QInstance()->InstanciateObject<TRWorldObject>(aoExplosionObject, *QTransform(), 2.0f, eExplosionCollisionLayer)->SetAnimLoop(false);
+	std::shared_ptr<TRWorldObject> pExplosion = TRWorld::QInstance()->InstanciateObject<TRWorldObject>(aoExplosionObject, *QTransform(), 2.0f, eExplosionCollisionLayer);
+	pExplosion->SetAnimLoop(false);
 	Destroy();
 }

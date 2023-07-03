@@ -59,7 +59,6 @@ bool QIsColliding(CollisionData apColliderA, CollisionData apColliderB)
 
 	if (fDist < fLargestRadius)
 	{
-		std::cout << "Colliding! \n";
 		bRetVal = true;
 	}
 
