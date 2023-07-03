@@ -87,6 +87,9 @@
     <ClCompile Include="Gameplay\AI\TREnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Gameplay\AI\TRWaveManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\ShaderManagement.h">
@@ -168,6 +171,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Gameplay\AI\TRWaveManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
