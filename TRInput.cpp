@@ -61,10 +61,13 @@ void TRInput::PollInputs()
 	};
 
 	// !!! ADD NEW TRInputKeys HERE !!!
-	KeyCheckFunctor(TRInputKey::UP,		window);
-	KeyCheckFunctor(TRInputKey::DOWN,	window);
-	KeyCheckFunctor(TRInputKey::LEFT,	window);
-	KeyCheckFunctor(TRInputKey::RIGHT,	window);
+	KeyCheckFunctor(TRInputKey::UP,			window);
+	KeyCheckFunctor(TRInputKey::DOWN,		window);
+	KeyCheckFunctor(TRInputKey::LEFT,		window);
+	KeyCheckFunctor(TRInputKey::RIGHT,		window);
+	KeyCheckFunctor(TRInputKey::START,		window);
+	KeyCheckFunctor(TRInputKey::RESTART,	window);
+	KeyCheckFunctor(TRInputKey::QUIT,		window);
 
 
 	// Check for released keys

@@ -39,7 +39,6 @@ TRWaveManager* const TRWaveManager::QInstance()
 {
 	if (instancePtr == nullptr)
 	{
-		std::srand((unsigned)time(0));	// Seed the RNG when we first get an instance of the class. If we have enough use cases, we can make a dedicated TRRandom class
 		instancePtr = new TRWaveManager();
 	}
 	return instancePtr;
@@ -48,6 +47,17 @@ TRWaveManager* const TRWaveManager::QInstance()
 /// <summary>Ticks the wave manager along. Handles timers for spawning and wave intermissions.</summary>
 void TRWaveManager::Update()
 {
+	if (TRWorld::QInstance()->QGameEnded())
+	{
+		lastSpawnTime = 0;
+		waveEndTime = 0;
+		bWaveEnded = false;
+		uiEnemiesKilled = 0;
+		uiEnemiesSpawned = 0;
+		uiAllowedEnemyTypes = 0;
+		return;
+	}
+
 	const clock_t cCurrentClock = clock();
 	float fTimeSinceLastSpawn = cCurrentClock - lastSpawnTime;
 	float fTimeSinceWaveEnd = cCurrentClock - waveEndTime;

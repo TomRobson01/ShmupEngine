@@ -7,6 +7,7 @@
 #include "TRWorldObject.h"
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Objects/TRWorld.h"
+#include "Rendering/TextureLoader.h"
 
 #define PLAYER_SPEED 5	// We'll want this to be exposed to the editor eventually, but until we know what form that takes, let's just define it here
 #define CLOCKS_BETWEEN_SHOTS 5
@@ -21,6 +22,9 @@ namespace
 
 	int iTicksSinceShot		= 0;
 	bool bCanShoot			= false;
+
+	int iHealth = 5;
+	int iHealthHUDTexture = -1;
 }
 
 TRPlayer* TRPlayer::instancePtr;
@@ -37,6 +41,8 @@ TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, float afCol
 	fCollisionRadius = afColliderRadius;
 	eCollisionLayer = aeLayer;
 	objID = aiID;
+	iHealth = 5;
+	iHealthHUDTexture = TextureLoader::QInstance().RequestTexture("Assets/Textures/T_Heart.png");
 	instancePtr = this;
 }
 
@@ -47,6 +53,7 @@ TRPlayer::~TRPlayer()
 void TRPlayer::OnStart()
 {
 	QTransform()->SetClamp(vPlayerXClamp.x, vPlayerXClamp.y, vPlayerYClamp.x, vPlayerYClamp.y);
+	iHealth = 5;
 
 	TRLoggerImGui::QInstance()->AddLog("New player started!", LogSeverity::TR_DEFAULT);
 	this->TRWorldObject::OnStart();
@@ -63,6 +70,18 @@ void TRPlayer::OnUpdate()
 	{
 		// Shoot!
 		HandleShotFired();
+	}
+
+	// Health UI
+	for (int i = 0; i < iHealth; i++)
+	{
+		TRRenderer::QInstance().AddRenderTarget(
+			(transform->QPositionX() - 1) + (0.5f * i),
+			transform->QPositionY() - 0.75f,
+			transform->QPositionZ(),
+			transform->QRotation(),
+			iHealthHUDTexture,
+			0.2f);
 	}
 
 	this->TRWorldObject::OnUpdate();
@@ -93,10 +112,25 @@ void TRPlayer::OnCollision(TRWorldObject* apOtherObject)
 	case CollisionLayer::CL_ENEMY_SUICIDER:
 	case CollisionLayer::CL_ENEMY_PROJECTILE:
 		TRWorld::QInstance()->RemoveWorldObject(apOtherObject->QID());
-		TRLoggerImGui::QInstance()->AddLog("Player hit!", LogSeverity::TR_DEFAULT);
+		TakeDamage(1);
 		break;
 	default:
 		break;
+	}
+}
+
+void TRPlayer::TakeDamage(int aiDamage)
+{
+	TRLoggerImGui::QInstance()->AddLog("Player hit!", LogSeverity::TR_DEFAULT);
+	iHealth -= aiDamage;
+	TRWorld::QInstance()->SetCamShakeDuration(0.5f);
+
+	if (iHealth <= 0)
+	{
+		TRWorld::QInstance()->SetCamShakeDuration(2);
+		Destroy(TRWorld::QInstance()->QObjExplosionPlayer());
+		TRLoggerImGui::QInstance()->AddLog("Player died", LogSeverity::TR_ERROR);
+		TRWorld::QInstance()->EndGame();
 	}
 }
 
@@ -124,6 +158,20 @@ void TRPlayer::CalculateTargetVelocity()
 		vTargetVelocity.x = 1;
 	}
 
+	// Tilt the ship based on the y velocity
+	if (vTargetVelocity.y > 0)
+	{
+		transform->SetRotation(0.1f);
+	}
+	else if (vTargetVelocity.y < 0)
+	{
+		transform->SetRotation(-0.1f);
+	}
+	else
+	{
+		transform->SetRotation(0);
+	}
+
 	if (vTargetVelocity.x == 0 && vTargetVelocity.y == 0)
 		return;
 
@@ -135,6 +183,7 @@ void TRPlayer::CalculateTargetVelocity()
 	// Then multiply our by our speeds
 	vTargetVelocity.x *= PLAYER_SPEED * FIXED_DELTA_TIME;
 	vTargetVelocity.y *= PLAYER_SPEED * FIXED_DELTA_TIME;
+
 }
 
 /// <summary>

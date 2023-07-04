@@ -71,12 +71,18 @@ public:
 		QPositionZ();
 	}
 
+	float SetRotation(float afNewRotation)
+	{
+		rotation = afNewRotation;
+		return QRotation();
+	}
+
 	float Rotate(float afDelta) { rotation += afDelta; return rotation; };
 
 	float const QPositionX() { return x; }
 	float const QPositionY() { return y; }
 	float const QPositionZ() { return z; }
-	float const QRotation()		{ return rotation; };
+	float const QRotation()	{ return rotation; };
 
 protected:
 	float x, y, z;

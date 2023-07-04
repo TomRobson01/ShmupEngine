@@ -15,23 +15,26 @@ struct TRRenderTarget
 {
 public:
 	TRRenderTarget() = default;
-	TRRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture)
+	TRRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f)
 	{
 		position = glm::vec3(aiX, aiY, aiZ);
 		rotation = afRotation;
 		texture = aiTexture;
+		scale = afScale;
 	};
 
 
-	unsigned int const QTexture() { return texture; };
-	glm::vec3 const QPosition()		{ return position; };
-	float const QRotation()			{ return rotation; };
+	unsigned int const	QTexture()		{ return texture; };
+	glm::vec3 const		QPosition()		{ return position; };
+	float const			QRotation()		{ return rotation; };
+	float const			QScale()		{ return scale; }
 
 private:
 	unsigned int texture;
 
 	glm::vec3 position;
 	float rotation;
+	float scale;
 };
 
 class TRRenderer
@@ -48,8 +51,10 @@ public:
 
 	void Shutdown();
 
-	void AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture);
+	void AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f);
 	void RenderStack();
+
+	void SetCameraShake(bool abEnabled);
 
 #ifdef _DEBUG
 	void AddImguiWindowToRender(std::shared_ptr<imguiWindow> apnewWindow) { imguiWindowStack.push_back(apnewWindow); };

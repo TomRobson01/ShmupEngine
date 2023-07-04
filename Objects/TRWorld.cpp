@@ -6,12 +6,16 @@
 #include <vector>
 
 #include "Gameplay/AI/TRWaveManager.h"
+#include "Gameplay/TRGameOverScreen.h"
+#include "Gameplay/TRMainMenu.h"
+#include "Objects/TRPlayer.h"
 
 
 namespace 
 {
 	clock_t lastAnimationUpdate;
 	clock_t lastFixedUpdateTime;
+	clock_t camShakeStarted;
 	std::vector<int> garbageObjCollection;
 }
 
@@ -30,6 +34,12 @@ TRWorld* const TRWorld::QInstance()
 /// </summary>
 void TRWorld::UpdateWorld()
 {
+	TRMainMenu::QInstance()->Update();
+
+	if (bGameEnded && bGameStarted)
+	{
+		TRGameOverScreen::QInstance()->Update();
+	}
 
 	// Get the time since last Update tick
 	const clock_t cCurrentClock = clock();
@@ -38,6 +48,13 @@ void TRWorld::UpdateWorld()
 	if (fTimeSinceFixedUpdate >= FIXED_UPDATE_TICKS)
 	{
 		lastFixedUpdateTime = cCurrentClock;
+	}
+
+	// Resolve camera shake
+	float fTimeSinceCamShakeBegin = cCurrentClock - camShakeStarted;
+	if (fTimeSinceCamShakeBegin > fCamShakeDuration)
+	{
+		TRRenderer::QInstance().SetCameraShake(false);
 	}
 
 	// Before updating anything remove any object we marked for deferred removal
@@ -91,4 +108,35 @@ std::shared_ptr<TRWorldObject> TRWorld::GetWorldObjectByID(int aiID)
 void TRWorld::RemoveWorldObject(int aiTargetID)
 {
 	garbageObjCollection.push_back(aiTargetID);
+}
+
+/// <summary>
+/// Sets the duration of a camera shake effect.
+/// </summary>
+/// <param name="afDuration">Duration in seconds of the camera shake effect.</param>
+void TRWorld::SetCamShakeDuration(float afDuration)
+{
+	fCamShakeDuration = afDuration * 1000;
+	const clock_t cCurrentClock = clock();
+	camShakeStarted = cCurrentClock;
+	TRRenderer::QInstance().SetCameraShake(true);
+}
+
+/// <summary>
+/// Spawns a player and begins the game started state.
+/// </summary>
+void TRWorld::StartGame()
+{
+	InstanciateObject<TRPlayer>(TRWorld::QInstance()->QObjPlayer(), Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
+	bGameStarted = true;
+	bGameEnded = false;
+}
+
+/// <summary>
+/// Despawns the player from the world and enters the game ended state.
+/// </summary>
+void TRWorld::EndGame()
+{
+	RemoveWorldObject(TRPlayer::QInstance()->QID());
+	bGameEnded = true;
 }

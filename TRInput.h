@@ -32,6 +32,11 @@ enum TRInputKey
 	DOWN	= 83,
 	LEFT	= 65,
 	RIGHT	= 68,
+
+	START	= 32,	// Space to start 
+
+	RESTART = 82,	// R to restart, used on game over menu
+	QUIT	= 256,
 };
 
 class TRInput

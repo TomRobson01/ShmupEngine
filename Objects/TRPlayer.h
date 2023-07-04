@@ -14,6 +14,7 @@ public:
 	void OnFixedUpdate() override;
 	void OnCollision(TRWorldObject* apOtherObject) override;
 
+	void TakeDamage(int aiDamage);
 
 private:
 	void CalculateTargetVelocity();

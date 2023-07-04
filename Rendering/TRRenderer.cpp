@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -5,6 +6,7 @@
 #include "DebugWindows/TestImGUIWindow.h"
 
 #include "TRRenderer.h"
+#include "TextureLoader.h"
 #include "Rendering/ShaderManagement.h"
 
 std::vector<TRRenderTarget> RenderTargetStack;
@@ -16,6 +18,11 @@ namespace
 	int screenHeight	= 600;
 
 	float fCamZoom = 4.0f;
+
+	float camShakeX = 0;
+	float camShakeY = 0;
+
+	bool bCamShakeEnabled = false;
 }
 
 // OpenGL resize callback
@@ -29,6 +36,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 TRRenderer::TRRenderer()
 {
+	std::srand((unsigned)time(0));
+
 	// Initialize GLFW
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -120,15 +129,15 @@ void TRRenderer::Shutdown()
 	glfwTerminate();
 }
 
-void TRRenderer::AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture)
+void TRRenderer::AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale)
 {
-	RenderTargetStack.push_back(TRRenderTarget(aiX, aiY, aiZ, afRotation, aiTexture));
+	RenderTargetStack.push_back(TRRenderTarget(aiX, aiY, aiZ, afRotation, aiTexture, afScale));
 }
 
 void TRRenderer::RenderStack()
 {
 	// Render to buffer
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.025f, 0.03f, 0.06f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 #ifdef _DEBUG
@@ -137,6 +146,20 @@ void TRRenderer::RenderStack()
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 #endif
+
+	// Calculate camera shake
+	if (bCamShakeEnabled)
+	{
+		int iCamShakeX = (rand() % 100);
+		int iCamShakeY = (rand() % 100);
+		camShakeX = iCamShakeX * 0.001f;
+		camShakeY = iCamShakeY * 0.001f;
+}
+	else
+	{
+		camShakeX = 0;
+		camShakeY = 0;
+	}
 
 	// All this needs to happen for each render target
 	for (TRRenderTarget target : RenderTargetStack)
@@ -147,8 +170,12 @@ void TRRenderer::RenderStack()
 		// Transformation code 
 		// -----------------------
 		// Create transformations
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), target.QPosition());		// Creates initial transformation
+		glm::vec3 pos = target.QPosition();
+		pos.x += camShakeX;
+		pos.y += camShakeX;
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos);		// Creates initial transformation
 		transform = glm::rotate(transform, target.QRotation(), glm::vec3(0.0f, 0.0f, 1.0f));		// Handles rotation
+		transform = glm::scale(transform, glm::vec3(target.QScale(), target.QScale(), target.QScale()));
 
 		// Set up our view matrix
 		// We want to use orthographic projection, so set that up, and move the view matrix back 3 units so the sprites are actually in view
@@ -170,6 +197,7 @@ void TRRenderer::RenderStack()
 	}
 
 	RenderTargetStack.clear();
+	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 15));
 
 #ifdef _DEBUG
 	// IMGUI -------------------------
@@ -191,4 +219,13 @@ void TRRenderer::RenderStack()
 	// End of frame - swap buffers
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+}
+
+/// <summary>
+/// Sets the camera shake to be on and off.
+/// </summary>
+/// <param name="abEnabled">Whether or not the camera shake is enabled.</param>
+void TRRenderer::SetCameraShake(bool abEnabled)
+{
+	bCamShakeEnabled = abEnabled;
 }

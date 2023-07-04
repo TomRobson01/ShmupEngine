@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -46,6 +47,14 @@ public:
 	std::shared_ptr<TRWorldObject> GetWorldObjectByID(int aiID);
 	void RemoveWorldObject(int aiTargetID);
 
+	void SetCamShakeDuration(float afDuration);
+
+	void RequestQuit() { bWantsQuit = true; }
+	bool QShouldQuit() { return bWantsQuit; }
+
+	void StartGame();
+	void EndGame();
+	bool QGameEnded()	{ return bGameEnded; }
 
 	std::mutex objLock;
 
@@ -82,6 +91,12 @@ private:
 	}
 
 	static TRWorld* instancePtr;
+
+	bool bGameStarted = false;
+	bool bGameEnded = true;
+	bool bWantsQuit;
+
+	float fCamShakeDuration;
 
 	std::map<int, std::shared_ptr<TRWorldObject>> worldObjects;
 	int IDGenerator = 0;

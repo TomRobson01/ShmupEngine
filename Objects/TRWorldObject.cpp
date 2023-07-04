@@ -39,7 +39,6 @@ void TRWorldObject::CallOnCollision(int aiCollidingObjectID)
 /// </summary>
 void TRWorldObject::OnStart()
 {
-	//TRLoggerImGui::QInstance()->AddLog("New object started!", LogSeverity::TR_DEFAULT);
 }
 
 /// <summary>
@@ -54,7 +53,6 @@ void TRWorldObject::OnUpdate()
 		transform->QRotation(),
 		baseObject.QTexture(uiCurrentAnimIndex));
 
-	//collider->SetPosition(transform->QPositionX(), transform->QPositionY());
 	fCollisionX = transform->QPositionX();
 	fCollisionY = transform->QPositionY();
 }

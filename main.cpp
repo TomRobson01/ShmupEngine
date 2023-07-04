@@ -5,7 +5,6 @@
 #include "TRInput.h"
 #include "TRLogger.h"
 #include "Gameplay/AI/TREnemy.h"
-#include "Objects/TRPlayer.h"
 #include "Objects/TRWorld.h"
 #include "Rendering/TextureLoader.h"
 #endif
@@ -27,16 +26,11 @@ void processInput(GLFWwindow* window)
 }
 int main()
 {
-	std::cout << "Hello, game!";
-
 	// Initialize our renderer and OpenGL by calling QInstance once.
 	GLFWwindow* window = TRRenderer::QInstance().QWindow();
 
 	// Load the world
 	// --------------------------
-
-	// We always instantiate our player via code, as they're a given. However, we'll do this via a TRWorld method later
-	TRWorld::QInstance()->InstanciateObject<TRPlayer>(TRWorld::QInstance()->QObjPlayer(), Transform(0, 0, 0, 0), 1.0f, CollisionLayer::CL_PLAYER);
 
 	// Wireframe mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FLAT);	// GL_FLAT = normal
@@ -48,7 +42,7 @@ int main()
 	TRPhysics::QInstance()->InitCollisionThread();
 
 	// Primary game loop!
-	while (!glfwWindowShouldClose(window))		// For the sake of keeping things seperate, this won't be running on OpenGL for long
+	while (!glfwWindowShouldClose(window) && !TRWorld::QInstance()->QShouldQuit())
 	{
 		// Process input
 		TRInput::QInstance()->PollInputs();

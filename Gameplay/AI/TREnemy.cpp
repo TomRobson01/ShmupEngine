@@ -72,6 +72,11 @@ void TREnemy::OnFixedUpdate()
 		Destroy();
 	}
 
+	if (TRWorld::QInstance()->QGameEnded())
+	{
+		Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
+	}
+
 	this->TRWorldObject::OnFixedUpdate();
 }
 
