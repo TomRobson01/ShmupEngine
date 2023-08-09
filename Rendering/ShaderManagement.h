@@ -38,10 +38,11 @@ private:
 	in vec2 TexCoord;
 
 	uniform sampler2D texture01;
+	uniform float fTime;
 
 	void main()
 	{
-		FragColor = texture(texture01, TexCoord);
+		FragColor = texture(texture01, vec2(TexCoord.x + fTime, TexCoord.y));
 	}
 )HERE";
 

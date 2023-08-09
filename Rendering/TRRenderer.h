@@ -15,19 +15,21 @@ struct TRRenderTarget
 {
 public:
 	TRRenderTarget() = default;
-	TRRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f)
+	TRRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f, bool abScrolls = false)
 	{
 		position = glm::vec3(aiX, aiY, aiZ);
 		rotation = afRotation;
 		texture = aiTexture;
 		scale = afScale;
+		scrolls = abScrolls;
 	};
 
 
-	unsigned int const	QTexture()		{ return texture; };
-	glm::vec3 const		QPosition()		{ return position; };
-	float const			QRotation()		{ return rotation; };
+	unsigned int const	QTexture()		{ return texture; }
+	glm::vec3 const		QPosition()		{ return position; }
+	float const			QRotation()		{ return rotation; }
 	float const			QScale()		{ return scale; }
+	bool const			QScrolls()		{ return scrolls; }
 
 private:
 	unsigned int texture;
@@ -35,6 +37,7 @@ private:
 	glm::vec3 position;
 	float rotation;
 	float scale;
+	bool scrolls;
 };
 
 class TRRenderer
@@ -51,7 +54,7 @@ public:
 
 	void Shutdown();
 
-	void AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f);
+	void AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale = 1.0f, bool abScrolls = false);
 	void RenderStack();
 
 	void SetCameraShake(bool abEnabled);

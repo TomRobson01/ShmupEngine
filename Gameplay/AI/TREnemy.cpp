@@ -9,9 +9,9 @@
 
 namespace
 {
-	ImVec2 vWantDir		= ImVec2(-1, 0);
-	TRPlayer* pPlayer;
+	ImVec2 vWantDir	= ImVec2(-1, 0);
 	ImVec2 vFireCooldownRange = ImVec2(4, 10);
+	TRPlayer* pPlayer;
 }
 
 TREnemy::TREnemy(TRObject& aBaseObj, Transform atInitialTransform, float afColliderRadius, CollisionLayer aeLayer, int aiID)
@@ -64,6 +64,8 @@ void TREnemy::OnFixedUpdate()
 	{
 		fTimeSinceFire += FIXED_DELTA_TIME;
 	}
+
+	fTime += FIXED_DELTA_TIME;
 
 	if (transform->QPositionX() <= -25)
 	{
@@ -132,7 +134,7 @@ void TREnemy::FireShot()
 	{
 		Transform t = *transform;
 		t.Translate(std::get<0>(pos), std::get<1>(pos), 0, 0);
-		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-10.0f, 0.0f, 5.0f);
+		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-5.5f, 0.0f, 5.0f);
 	}
 		
 	fTimeSinceFire = 0;
@@ -151,9 +153,15 @@ void TREnemy::TickMotion()
 	switch (motionType)
 	{
 	case ENEMY_MOTION_TYPE::MT_PROGRESS:
-		// Progressing left
 		vWantDir = ImVec2(-1, 0);
 		break;
+	case ENEMY_MOTION_TYPE::MT_SINE:
+	{
+		// Following sine wave  v Amplitude      PI     v Frequency	
+		float fYOffset =		1.0f * sin(2 * 3.14 *   0.1f * fTime);
+		vWantDir = ImVec2(-1, fYOffset);
+		break;
+	}
 	case ENEMY_MOTION_TYPE::MT_HOMING:
 		// Progressing towards the player
 		if (pPlayer)

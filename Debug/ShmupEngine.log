@@ -1,21 +1,13 @@
-﻿  TRGameOverScreen.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
-  TRMainMenu.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
-  TRPlayer.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(184,54): warning C4305: '*=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRPlayer.cpp(185,54): warning C4305: '*=': truncation from 'double' to 'float'
-  TRWorld.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(46,30): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(54,32): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorld.cpp(69,20): warning C4018: '<': signed/unsigned mismatch
-  TRWorldObject.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Libraries\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Objects\TRWorldObject.cpp(67,38): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-  TRRenderer.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
+﻿  TREnemy.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(67,37): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(70,27): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(143,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(152,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(160,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  TRWaveManager.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(62,28): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(63,26): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(168,8): warning C4834: discarding return value of function with 'nodiscard' attribute
   main.cpp
 C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
   Generating Code...

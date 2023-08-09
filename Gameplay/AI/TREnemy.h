@@ -7,6 +7,7 @@
 enum class ENEMY_MOTION_TYPE
 {
 	MT_PROGRESS,
+	MT_SINE,
 	MT_HOMING,
 	MT_COUNT
 };
@@ -46,5 +47,6 @@ private:
 	float fCurrentFireCooldown = 0.0f;
 	float fTimeSinceFire = 0.0f;
 	float fMoveSpeed = 1.0f;
+	float fTime = 0.0f;
 };
 

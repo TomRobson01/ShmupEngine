@@ -119,6 +119,7 @@ void TRWaveManager::SpawnEnemy()
 				e->AddFirePoint(0, 1);
 				e->SetHealth(17);
 				e->SetMoveSpeed(0.5f);
+				e->SetMotionType(ENEMY_MOTION_TYPE::MT_SINE);
 				break;
 			}
 		case (int)ENEMY_TYPE::BASIC:

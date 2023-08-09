@@ -22,6 +22,9 @@ namespace
 	float camShakeX = 0;
 	float camShakeY = 0;
 
+	float fTime = 0.0f;
+	float fScrollSpeed = 1.0f;
+
 	bool bCamShakeEnabled = false;
 }
 
@@ -129,9 +132,9 @@ void TRRenderer::Shutdown()
 	glfwTerminate();
 }
 
-void TRRenderer::AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale)
+void TRRenderer::AddRenderTarget(float aiX, float aiY, float aiZ, float afRotation, unsigned int aiTexture, float afScale, bool abScrolls)
 {
-	RenderTargetStack.push_back(TRRenderTarget(aiX, aiY, aiZ, afRotation, aiTexture, afScale));
+	RenderTargetStack.push_back(TRRenderTarget(aiX, aiY, aiZ, afRotation, aiTexture, afScale, abScrolls));
 }
 
 void TRRenderer::RenderStack()
@@ -189,6 +192,15 @@ void TRRenderer::RenderStack()
 		unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
+		if (target.QScrolls())
+		{
+			glUniform1f(glGetUniformLocation(shaderProgram, "fTime"), fTime);
+		}
+		else
+		{
+			glUniform1f(glGetUniformLocation(shaderProgram, "fTime"), 1.0f);
+		}
+
 		// --------------------------
 
 		// Finally, render
@@ -196,8 +208,10 @@ void TRRenderer::RenderStack()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 
+	fTime += 0.001f * fScrollSpeed;
 	RenderTargetStack.clear();
-	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 15));
+	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 15, true));
+	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 20, true));
 
 #ifdef _DEBUG
 	// IMGUI -------------------------
