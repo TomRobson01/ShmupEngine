@@ -14,6 +14,7 @@ public:
 	void OnFixedUpdate() override;
 	void OnCollision(TRWorldObject* apOtherObject) override;
 
+	void RestoreHealth(int aiHealAmount);
 	void TakeDamage(int aiDamage);
 
 private:

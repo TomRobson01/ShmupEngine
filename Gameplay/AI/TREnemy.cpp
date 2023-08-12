@@ -1,4 +1,5 @@
 #include "TREnemy.h"
+#include "TRMath.h"
 #include "TRWaveManager.h"
 #include "DebugWindows/TRLoggerImGui.h"
 #include "Objects/TRPlayer.h"
@@ -121,6 +122,7 @@ void TREnemy::DamageHealth(float afDamage)
 	{
 		TRLoggerImGui::QInstance()->AddLog("Enemy died", LogSeverity::TR_DEFAULT);
 		TRWaveManager::QInstance()->OnEnemyDeath();
+		TRWaveManager::QInstance()->TrySpawnDrop(QTransform()->QPositionX(), QTransform()->QPositionY());
 		Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
 	}
 }
@@ -157,8 +159,7 @@ void TREnemy::TickMotion()
 		break;
 	case ENEMY_MOTION_TYPE::MT_SINE:
 	{
-		// Following sine wave  v Amplitude      PI     v Frequency	
-		float fYOffset =		1.0f * sin(2 * 3.14 *   0.1f * fTime);
+		float fYOffset = TRMath::FSine(1.0f, 0.1f, fTime);
 		vWantDir = ImVec2(-1, fYOffset);
 		break;
 	}
@@ -170,14 +171,9 @@ void TREnemy::TickMotion()
 			ImVec2 myPos = ImVec2(QTransform()->QPositionX(), QTransform()->QPositionY());
 
 			ImVec2 vDelta = ImVec2(playerPos.x - myPos.x, playerPos.y - myPos.y);
+			TRMath::VFNormalize(vDelta.x, vDelta.y);
 
-			// UGLY VECTOR CALCULATION!
-			// We need to make a dedicated vector library at some point...
-			float fTangent = abs(vDelta.y);
-			float fAdjacent = abs(vDelta.x);
-			float fDist = sqrtf((fTangent * fTangent) + (fAdjacent * fAdjacent));
-
-			vWantDir = ImVec2(vDelta.x / fDist, vDelta.y / fDist);
+			vWantDir = vDelta;
 		}
 		break;
 	default:

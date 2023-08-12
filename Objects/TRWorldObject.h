@@ -35,6 +35,8 @@ public:
 	void SetAnimLoop(bool abLoops = true)						{ bLoopsAnim = abLoops; }
 	void SetExplosionCollisionLayer(CollisionLayer aeColLayer)	{ eExplosionCollisionLayer = aeColLayer; };
 
+	void SetScale(float afNewScale) { fScale = afNewScale; }
+
 	int QID() const { return objID; }
 
 
@@ -61,5 +63,6 @@ private:
 	clock_t lastAnimationUpdate;
 	bool bLoopsAnim = true;
 	CollisionLayer eExplosionCollisionLayer = CollisionLayer::CL_DEFAULT;
+	float fScale = 1.0f;
 };
 

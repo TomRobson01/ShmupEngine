@@ -9,6 +9,8 @@
 #include "TextureLoader.h"
 #include "Rendering/ShaderManagement.h"
 
+#include "Gameplay/AI/TRWaveManager.h"
+
 std::vector<TRRenderTarget> RenderTargetStack;
 std::atomic<bool> RenderThreadLock;
 
@@ -207,8 +209,8 @@ void TRRenderer::RenderStack()
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-
-	fTime += 0.001f * fScrollSpeed;
+	// QScrollSpeedMultiplier
+	fTime += 0.001f * fScrollSpeed * TRWaveManager::QInstance()->QScrollSpeedMultiplier();
 	RenderTargetStack.clear();
 	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 15, true));
 	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 20, true));

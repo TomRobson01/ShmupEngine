@@ -68,6 +68,8 @@ public:
 	TRObject QObjExplosionPlayer()  { return ObjExplosionPlayer; }
 	TRObject QObjExplosionEnemy()	{ return ObjExplosionEnemy; }
 
+	TRObject QObjPickupHeart()		{ return ObjPickupHeart; }
+
 private:
 	TRWorld() 
 	{
@@ -79,6 +81,7 @@ private:
 		std::vector<const char*> cEnemyTextureAtlasProjectile		= { "Assets/Textures/T_Projectile_Enemy_01.png", "Assets/Textures/T_Projectile_Enemy_02.png" };
 		std::vector<const char*> cExplosionPlayerTextureAtlas		= { "Assets/Textures/T_Explosion_Player_01.png", "Assets/Textures/T_Explosion_Player_02.png", "Assets/Textures/T_Explosion_Player_03.png", "Assets/Textures/T_Explosion_Player_04.png", "Assets/Textures/T_Explosion_Player_05.png" };
 		std::vector<const char*> cExplosionEnemyTextureAtlas		= { "Assets/Textures/T_Explosion_Enemy_01.png", "Assets/Textures/T_Explosion_Enemy_02.png", "Assets/Textures/T_Explosion_Enemy_03.png", "Assets/Textures/T_Explosion_Enemy_04.png", "Assets/Textures/T_Explosion_Enemy_05.png" };
+		std::vector<const char*> cHeartPickupTextureAtlas			= { "Assets/Textures/T_Heart.png" };
 
 		ObjPlayer			= TRObject("Player",				cPlayerTextureAtlas);
 		ObjPlayerProjectile = TRObject("PlayerProjectile",		cPlayerTextureAtlasProjectile);
@@ -88,6 +91,7 @@ private:
 		ObjEnemyProjectile	= TRObject("PlayerProjectile",		cEnemyTextureAtlasProjectile);
 		ObjExplosionPlayer	= TRObject("ExplosionPlayer",		cExplosionPlayerTextureAtlas);
 		ObjExplosionEnemy	= TRObject("ExplosionEnemy",		cExplosionEnemyTextureAtlas);
+		ObjPickupHeart		= TRObject("PickupHeart",			cHeartPickupTextureAtlas);
 	}
 
 	static TRWorld* instancePtr;
@@ -111,6 +115,8 @@ private:
 
 	TRObject ObjExplosionPlayer;
 	TRObject ObjExplosionEnemy;
+
+	TRObject ObjPickupHeart;
 	// End of TRObject defs ------------------
 };
 

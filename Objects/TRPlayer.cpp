@@ -23,7 +23,8 @@ namespace
 	int iTicksSinceShot		= 0;
 	bool bCanShoot			= false;
 
-	int iHealth = 5;
+	const int iStartHealth = 5;
+	int iHealth = iStartHealth;
 	int iHealthHUDTexture = -1;
 }
 
@@ -117,6 +118,13 @@ void TRPlayer::OnCollision(TRWorldObject* apOtherObject)
 	default:
 		break;
 	}
+}
+
+void TRPlayer::RestoreHealth(int aiHealAmount)
+{
+	TRLoggerImGui::QInstance()->AddLog("Player healed!", LogSeverity::TR_DEFAULT);
+	iHealth += aiHealAmount;
+	iHealth = std::min(iHealth, iStartHealth);
 }
 
 void TRPlayer::TakeDamage(int aiDamage)

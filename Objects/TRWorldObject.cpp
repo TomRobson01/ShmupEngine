@@ -51,7 +51,8 @@ void TRWorldObject::OnUpdate()
 		transform->QPositionY(),
 		transform->QPositionZ(),
 		transform->QRotation(),
-		baseObject.QTexture(uiCurrentAnimIndex));
+		baseObject.QTexture(uiCurrentAnimIndex),
+		fScale);
 
 	fCollisionX = transform->QPositionX();
 	fCollisionY = transform->QPositionY();

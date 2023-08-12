@@ -1,14 +1,7 @@
-﻿  TREnemy.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(67,37): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(70,27): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(143,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(152,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TREnemy.cpp(160,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  TRWaveManager.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(62,28): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(63,26): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(168,8): warning C4834: discarding return value of function with 'nodiscard' attribute
-  main.cpp
-C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Rendering\TextureLoader.h(16,39): warning C4227: anachronism used: qualifiers on reference are ignored
-  Generating Code...
+﻿  TRWaveManager.cpp
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\TRMath.h(14,22): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(75,28): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(76,26): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(194,8): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Users\Tom\source\repos\ShmupEngine\ShmupEngine\Gameplay\AI\TRWaveManager.cpp(209,24): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
   ShmupEngine.vcxproj -> C:\Users\Tom\source\repos\ShmupEngine\Debug\ShmupEngine.exe
