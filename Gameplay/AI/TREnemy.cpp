@@ -75,9 +75,9 @@ void TREnemy::OnFixedUpdate()
 		Destroy();
 	}
 
-	if (TRWorld::QInstance()->QGameEnded())
+	if (TRWorld::QInstance()->QGameEnded() || TRWaveManager::QInstance()->QWaveEnded())
 	{
-		Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
+		Destroy(TRWorld::QInstance()->QObjExplosion());
 	}
 
 	this->TRWorldObject::OnFixedUpdate();
@@ -104,7 +104,7 @@ void TREnemy::OnCollision(TRWorldObject* apOtherObject)
 	case CollisionLayer::CL_PLAYER:
 		if (apOtherObject->QCollisionLayer() == CollisionLayer::CL_ENEMY_SUICIDER)
 			TRWaveManager::QInstance()->OnEnemyDeath();
-			Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
+			Destroy(TRWorld::QInstance()->QObjExplosion());
 		break;
 	default:
 		break;
@@ -123,7 +123,7 @@ void TREnemy::DamageHealth(float afDamage)
 		TRLoggerImGui::QInstance()->AddLog("Enemy died", LogSeverity::TR_DEFAULT);
 		TRWaveManager::QInstance()->OnEnemyDeath();
 		TRWaveManager::QInstance()->TrySpawnDrop(QTransform()->QPositionX(), QTransform()->QPositionY());
-		Destroy(TRWorld::QInstance()->QObjExplosionEnemy());
+		Destroy(TRWorld::QInstance()->QObjExplosion());
 	}
 }
 
@@ -132,11 +132,11 @@ void TREnemy::DamageHealth(float afDamage)
 /// </summary>
 void TREnemy::FireShot()
 {
-	for (std::tuple<float, float> pos : vFirePoints)
+	for (FirePoint point : vFirePoints)
 	{
 		Transform t = *transform;
-		t.Translate(std::get<0>(pos), std::get<1>(pos), 0, 0);
-		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(-5.5f, 0.0f, 5.0f);
+		t.Translate(point.fFirePointX, point.fFireDirectionY, 0, 0);
+		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjEnemyProjectile(), t, 0.5f, CollisionLayer::CL_ENEMY_PROJECTILE)->InitializeProjectileData(point.fFireDirectionX * fProjectileSpeed, point.fFireDirectionY * fProjectileSpeed, 5.0f);
 	}
 		
 	fTimeSinceFire = 0;
@@ -159,7 +159,7 @@ void TREnemy::TickMotion()
 		break;
 	case ENEMY_MOTION_TYPE::MT_SINE:
 	{
-		float fYOffset = TRMath::FSine(1.0f, 0.1f, fTime);
+		float fYOffset = TRMath::FSine(fSineAmplitude, 0.1f, fTime);
 		vWantDir = ImVec2(-1, fYOffset);
 		break;
 	}

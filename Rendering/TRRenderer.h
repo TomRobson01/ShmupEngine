@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <memory>
 #include <vector>
 
 struct TRRenderTarget
@@ -58,6 +59,8 @@ public:
 	void RenderStack();
 
 	void SetCameraShake(bool abEnabled);
+
+	void ScreenPositionToRenderPosition(float afScreenX, float afScreenY, float& afOutX, float& afOutY);
 
 #ifdef _DEBUG
 	void AddImguiWindowToRender(std::shared_ptr<imguiWindow> apnewWindow) { imguiWindowStack.push_back(apnewWindow); };

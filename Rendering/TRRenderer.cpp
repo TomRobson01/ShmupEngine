@@ -16,8 +16,14 @@ std::atomic<bool> RenderThreadLock;
 
 namespace
 {
-	int screenWidth		= 800;
-	int screenHeight	= 600;
+	unsigned int screenWidth		= 800;
+	unsigned int screenHeight	= 600;
+
+	// Values to store the extents of the camera view in world positions
+	float fLeftExtents;
+	float fRightExtents;
+	float fUpExtents;
+	float fDownExtents;
 
 	float fCamZoom = 4.0f;
 
@@ -35,8 +41,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	screenWidth		= width;
 	screenHeight	= height;
-	std::cout << "New Resolution:\n" << screenWidth << ", " << screenHeight << std::endl;
 	glViewport(0, 0, screenWidth, screenHeight);
+
 }
 
 TRRenderer::TRRenderer()
@@ -141,6 +147,14 @@ void TRRenderer::AddRenderTarget(float aiX, float aiY, float aiZ, float afRotati
 
 void TRRenderer::RenderStack()
 {
+
+	// Calculate view extents
+	fLeftExtents	= -4.0f * fCamZoom;
+	fRightExtents	=  4.0f * fCamZoom;
+	fUpExtents		=  3.0f * fCamZoom;
+	fDownExtents	= -3.0f * fCamZoom;
+
+
 	// Render to buffer
 	glClearColor(0.025f, 0.03f, 0.06f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -187,7 +201,7 @@ void TRRenderer::RenderStack()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		projection = glm::ortho(-4.0f * fCamZoom, +4.0f * fCamZoom, -3.f * fCamZoom, +3.f * fCamZoom, 0.1f, 100.0f);
+		projection = glm::ortho(fLeftExtents, fRightExtents, fDownExtents, fUpExtents, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "camMatrix"), 1, GL_FALSE, glm::value_ptr(projection * view));
 
 		// Also need to handle transformation
@@ -209,7 +223,8 @@ void TRRenderer::RenderStack()
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-	// QScrollSpeedMultiplier
+
+	// Stars
 	fTime += 0.001f * fScrollSpeed * TRWaveManager::QInstance()->QScrollSpeedMultiplier();
 	RenderTargetStack.clear();
 	RenderTargetStack.push_back(TRRenderTarget(0, 0, 0, 0, TextureLoader::QInstance().RequestTexture("Assets/Textures/T_BG_Stars.png"), 15, true));
@@ -244,4 +259,10 @@ void TRRenderer::RenderStack()
 void TRRenderer::SetCameraShake(bool abEnabled)
 {
 	bCamShakeEnabled = abEnabled;
+}
+
+void TRRenderer::ScreenPositionToRenderPosition(float afScreenX, float afScreenY, float& afOutX, float& afOutY)
+{
+	afOutY = fUpExtents + afScreenY * (fDownExtents - fUpExtents);
+	afOutX = fLeftExtents + afScreenX * (fRightExtents - fLeftExtents);
 }

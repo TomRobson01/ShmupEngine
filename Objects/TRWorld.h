@@ -63,35 +63,60 @@ public:
 	TRObject QObjEnemy()			{ return ObjEnemy; }
 	TRObject QObjEnemyTough()		{ return ObjEnemy_Tough; }
 	TRObject QObjEnemySuicider()	{ return ObjEnemy_Suicider; }
+	TRObject QObjEnemyEmitter()		{ return ObjEnemy_Emitter; }
+
+	TRObject QObjEnemyDebris()		// Returns a random ObjEnemy_Debris
+	{ 
+		switch (rand() % 3)
+		{
+		case 1:
+			return ObjEnemy_DebrisB;
+		case 2:
+			return ObjEnemy_DebrisC;
+		default:
+			return ObjEnemy_DebrisA;
+		}
+	}
 	TRObject QObjEnemyProjectile()	{ return ObjEnemyProjectile;		}
 
-	TRObject QObjExplosionPlayer()  { return ObjExplosionPlayer; }
-	TRObject QObjExplosionEnemy()	{ return ObjExplosionEnemy; }
+	TRObject QObjExplosion()  { return ObjExplosion; }
 
+	TRObject QObjPickup()			{ return ObjPickup; }
 	TRObject QObjPickupHeart()		{ return ObjPickupHeart; }
+	TRObject QObjPickupExplosion()	{ return ObjPickupExplosion; }
 
 private:
 	TRWorld() 
 	{
 		std::vector<const char*> cPlayerTextureAtlas				= { "Assets/Textures/T_Player_01.png", "Assets/Textures/T_Player_02.png", "Assets/Textures/T_Player_03.png" };
-		std::vector<const char*> cPlayerTextureAtlasProjectile		= { "Assets/Textures/T_Projectile_Player_01.png", "Assets/Textures/T_Projectile_Player_02.png" };
+		std::vector<const char*> cPlayerTextureAtlasProjectile		= { "Assets/Textures/T_Projectile_Player.png" };
 		std::vector<const char*> cEnemyTextureAtlas					= { "Assets/Textures/T_Enemy_01.png", "Assets/Textures/T_Enemy_02.png", "Assets/Textures/T_Enemy_03.png" };
 		std::vector<const char*> cEnemyToughTextureAtlas			= { "Assets/Textures/T_Enemy_Tough_01.png", "Assets/Textures/T_Enemy_Tough_02.png", "Assets/Textures/T_Enemy_Tough_03.png" };
 		std::vector<const char*> cEnemySuiciderTextureAtlas			= { "Assets/Textures/T_Enemy_Suicide_01.png", "Assets/Textures/T_Enemy_Suicide_02.png" };
-		std::vector<const char*> cEnemyTextureAtlasProjectile		= { "Assets/Textures/T_Projectile_Enemy_01.png", "Assets/Textures/T_Projectile_Enemy_02.png" };
-		std::vector<const char*> cExplosionPlayerTextureAtlas		= { "Assets/Textures/T_Explosion_Player_01.png", "Assets/Textures/T_Explosion_Player_02.png", "Assets/Textures/T_Explosion_Player_03.png", "Assets/Textures/T_Explosion_Player_04.png", "Assets/Textures/T_Explosion_Player_05.png" };
-		std::vector<const char*> cExplosionEnemyTextureAtlas		= { "Assets/Textures/T_Explosion_Enemy_01.png", "Assets/Textures/T_Explosion_Enemy_02.png", "Assets/Textures/T_Explosion_Enemy_03.png", "Assets/Textures/T_Explosion_Enemy_04.png", "Assets/Textures/T_Explosion_Enemy_05.png" };
+		std::vector<const char*> cEnemyDebrisTextureAtlasA			= { "Assets/Textures/T_Asteroid_01.png" };
+		std::vector<const char*> cEnemyDebrisTextureAtlasB			= { "Assets/Textures/T_Asteroid_02.png" };
+		std::vector<const char*> cEnemyDebrisTextureAtlasC			= { "Assets/Textures/T_Asteroid_03.png" };
+		std::vector<const char*> cEnemyEmitterTextureAtlas			= { "Assets/Textures/T_Enemy_Emitter.png" };
+		std::vector<const char*> cEnemyTextureAtlasProjectile		= { "Assets/Textures/T_Projectile_Enemy.png" };
+		std::vector<const char*> cExplosionTextureAtlas				= { "Assets/Textures/T_Explosion_01.png", "Assets/Textures/T_Explosion_02.png", "Assets/Textures/T_Explosion_03.png", "Assets/Textures/T_Explosion_04.png", "Assets/Textures/T_Explosion_05.png", "Assets/Textures/T_Explosion_06.png" };
 		std::vector<const char*> cHeartPickupTextureAtlas			= { "Assets/Textures/T_Heart.png" };
+		std::vector<const char*> cPickupTextureAtlas				= { "Assets/Textures/T_Powerup_01.png", "Assets/Textures/T_Powerup_02.png", "Assets/Textures/T_Powerup_03.png", "Assets/Textures/T_Powerup_04.png", "Assets/Textures/T_Powerup_05.png","Assets/Textures/T_Powerup_06.png" };
+		std::vector<const char*> cPickupExplosionTextureAtlas		= { "Assets/Textures/T_Explosion_Powerup_01.png", "Assets/Textures/T_Explosion_Powerup_02.png", "Assets/Textures/T_Explosion_Powerup_03.png", "Assets/Textures/T_Explosion_Powerup_04.png" };
 
 		ObjPlayer			= TRObject("Player",				cPlayerTextureAtlas);
 		ObjPlayerProjectile = TRObject("PlayerProjectile",		cPlayerTextureAtlasProjectile);
 		ObjEnemy			= TRObject("Enemy",					cEnemyTextureAtlas);
 		ObjEnemy_Tough		= TRObject("EnemyTough",			cEnemyToughTextureAtlas);
 		ObjEnemy_Suicider	= TRObject("EnemySuicider",			cEnemySuiciderTextureAtlas);
+		ObjEnemy_Emitter	= TRObject("EnemyEmitter",			cEnemyEmitterTextureAtlas);
+		ObjEnemy_DebrisA	= TRObject("EnemyDebrisA",			cEnemyDebrisTextureAtlasA);
+		ObjEnemy_DebrisB	= TRObject("EnemyDebrisB",			cEnemyDebrisTextureAtlasB);
+		ObjEnemy_DebrisC	= TRObject("EnemyDebrisC",			cEnemyDebrisTextureAtlasC);
 		ObjEnemyProjectile	= TRObject("PlayerProjectile",		cEnemyTextureAtlasProjectile);
-		ObjExplosionPlayer	= TRObject("ExplosionPlayer",		cExplosionPlayerTextureAtlas);
-		ObjExplosionEnemy	= TRObject("ExplosionEnemy",		cExplosionEnemyTextureAtlas);
+		ObjExplosion		= TRObject("Explosion",				cExplosionTextureAtlas);
+		ObjPickup			= TRObject("Pickup",				cPickupTextureAtlas);
 		ObjPickupHeart		= TRObject("PickupHeart",			cHeartPickupTextureAtlas);
+		ObjPickupExplosion	= TRObject("PickupExplosion",		cPickupExplosionTextureAtlas);
 	}
 
 	static TRWorld* instancePtr;
@@ -111,12 +136,17 @@ private:
 	TRObject ObjEnemy;
 	TRObject ObjEnemy_Tough;
 	TRObject ObjEnemy_Suicider;
+	TRObject ObjEnemy_Emitter;
+	TRObject ObjEnemy_DebrisA;
+	TRObject ObjEnemy_DebrisB;
+	TRObject ObjEnemy_DebrisC;
 	TRObject ObjEnemyProjectile;
 
-	TRObject ObjExplosionPlayer;
-	TRObject ObjExplosionEnemy;
+	TRObject ObjExplosion;
 
+	TRObject ObjPickup;
 	TRObject ObjPickupHeart;
+	TRObject ObjPickupExplosion;
 	// End of TRObject defs ------------------
 };
 

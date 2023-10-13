@@ -17,6 +17,8 @@ public:
 	void RestoreHealth(int aiHealAmount);
 	void TakeDamage(int aiDamage);
 
+	void RequestTricannon();
+
 private:
 	void CalculateTargetVelocity();
 	void HandleShotFired();
@@ -24,5 +26,7 @@ private:
 	TRPlayer() {}
 
 	static TRPlayer* instancePtr;
+
+	bool bTriCannonActive;
 };
 

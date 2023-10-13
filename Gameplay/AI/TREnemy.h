@@ -12,6 +12,22 @@ enum class ENEMY_MOTION_TYPE
 	MT_COUNT
 };
 
+struct FirePoint
+{
+	FirePoint(const float afFirePointX, const float afFirePointY, const float afFireDirX = -1.0f, const float afFireDirY = 0.0f)
+	{
+		fFirePointX = afFirePointX;
+		fFirePointY = afFirePointY;
+		fFireDirectionX = afFireDirX;
+		fFireDirectionY = afFireDirY;
+	}
+
+	float fFirePointX;
+	float fFirePointY;
+	float fFireDirectionX;
+	float fFireDirectionY;
+};
+
 class TREnemy : public TRWorldObject
 {
 public:
@@ -25,10 +41,12 @@ public:
 
 	void DamageHealth(float afDamage);
 
-	void SetHealth(float afHealth)						{ fHealth = afHealth; }
-	void SetMoveSpeed(float afSpeed)					{ fMoveSpeed = afSpeed; }
-	void SetMotionType(ENEMY_MOTION_TYPE aeMotionType)	{ motionType = aeMotionType; }
-	void AddFirePoint(float aiX, float aiY)				{ vFirePoints.push_back(std::make_tuple(aiX, aiY)); }
+	void SetHealth(float afHealth)															{ fHealth = afHealth; }
+	void SetMoveSpeed(float afSpeed)														{ fMoveSpeed = afSpeed; }
+	void SetProjectileSpeed(float afSpeed)													{ fProjectileSpeed = afSpeed; }
+	void SetMotionType(ENEMY_MOTION_TYPE aeMotionType)										{ motionType = aeMotionType; }
+	void SetSineAmplitude(float afNewAmplitude)												{ fSineAmplitude = afNewAmplitude; }
+	void AddFirePoint(float aiX, float aiY, float aiDirX = -1.0f, float aiDirY = 0.0f)		{ vFirePoints.push_back(FirePoint(aiX, aiY, aiDirX, aiDirY)); }
 
 	ENEMY_MOTION_TYPE const QMotionType() { return motionType; }
 
@@ -39,7 +57,7 @@ protected:
 private:
 	TREnemy() {}
 
-	std::vector<std::tuple<float, float>> vFirePoints;
+	std::vector<FirePoint> vFirePoints;
 
 	ENEMY_MOTION_TYPE motionType;
 
@@ -47,6 +65,8 @@ private:
 	float fCurrentFireCooldown = 0.0f;
 	float fTimeSinceFire = 0.0f;
 	float fMoveSpeed = 1.0f;
+	float fProjectileSpeed = 5.5f;
 	float fTime = 0.0f;
+	float fSineAmplitude = 1.0f;
 };
 

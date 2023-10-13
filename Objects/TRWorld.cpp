@@ -8,6 +8,7 @@
 #include "Gameplay/AI/TRWaveManager.h"
 #include "Gameplay/TRGameOverScreen.h"
 #include "Gameplay/TRMainMenu.h"
+#include "Interface/TRInterface.h"
 #include "Objects/TRPlayer.h"
 
 
@@ -79,6 +80,9 @@ void TRWorld::UpdateWorld()
 		}
 		TRWorld::QInstance()->objLock.unlock();
 	}
+
+	// Tell the interface to render the UI
+	TRInterface::QInstance()->RenderUI();
 
 	if (fTimeSinceFixedUpdate >= FIXED_UPDATE_TICKS)
 	{

@@ -297,6 +297,7 @@
     <ClCompile Include="Gameplay\TRGameOverScreen.cpp" />
     <ClCompile Include="Gameplay\TRDrop.cpp" />
     <ClCompile Include="TRInput.cpp" />
+    <ClCompile Include="Interface\TRInterface.cpp" />
     <ClCompile Include="TRLogger.cpp" />
     <ClCompile Include="DebugWindows\TRLoggerImGui.cpp" />
     <ClCompile Include="Objects\TRWorld.cpp" />
@@ -305,6 +306,7 @@
     <ClCompile Include="Objects\TRProjectile.cpp" />
     <ClCompile Include="Gameplay\AI\TRWaveManager.cpp" />
     <ClCompile Include="Gameplay\TRMainMenu.cpp" />
+    <ClCompile Include="Interface\TRUIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugWindows\ImGuiDefines.h" />
@@ -330,6 +332,7 @@
     <ClInclude Include="Gameplay\TRGameOverScreen.h" />
     <ClInclude Include="Gameplay\TRDrop.h" />
     <ClInclude Include="TRInput.h" />
+    <ClInclude Include="Interface\TRInterface.h" />
     <ClInclude Include="TRLogger.h" />
     <ClInclude Include="DebugWindows\TRLoggerImGui.h" />
     <ClInclude Include="Objects\TRWorld.h" />
@@ -339,6 +342,7 @@
     <ClInclude Include="Gameplay\AI\TRWaveManager.h" />
     <ClInclude Include="Gameplay\TRMainMenu.h" />
     <ClInclude Include="TRMath.h" />
+    <ClInclude Include="Interface\TRUIElement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

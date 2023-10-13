@@ -6,6 +6,8 @@
 #include "TRProjectile.h"
 #include "TRWorldObject.h"
 #include "DebugWindows/TRLoggerImGui.h"
+#include "Interface/TRInterface.h"
+#include "Interface/TRUIElement.h"
 #include "Objects/TRWorld.h"
 #include "Rendering/TextureLoader.h"
 
@@ -17,15 +19,32 @@ namespace
 	ImVec2 vCurrentVelocity;	// Our current velocity - interpolates towards vTargetVelocity per fixed update
 	ImVec2 vTargetVelocity;		// Our "wish" velocity
 
-	const ImVec2 vPlayerXClamp = ImVec2(-15.5f, -2.0f);
-	const ImVec2 vPlayerYClamp = ImVec2(-11.5f, 11.5f);
+	constexpr ImVec2 vPlayerXClamp = ImVec2(-15.5f, -2.0f);
+	constexpr ImVec2 vPlayerYClamp = ImVec2(-11.5f, 11.5f);
 
 	int iTicksSinceShot		= 0;
 	bool bCanShoot			= false;
 
-	const int iStartHealth = 5;
+	constexpr int iStartHealth = 5;
 	int iHealth = iStartHealth;
 	int iHealthHUDTexture = -1;
+
+	float fTricannonTime = 0.0f;
+	constexpr float fTricannonDuration = 10.f;
+	ImVec2 vShotPositionsA[3] = { ImVec2(0, 0), ImVec2(0, 1), ImVec2(0, -1) };
+
+	TRUIElement* pHeartsUI[5] = { nullptr };
+
+	void UpdateHeartsUI()
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			if (pHeartsUI[i])
+			{
+				pHeartsUI[i]->SetVisibility(i < iHealth);
+			}
+		}
+	}
 }
 
 TRPlayer* TRPlayer::instancePtr;
@@ -49,12 +68,33 @@ TRPlayer::TRPlayer(TRObject& aBaseObj, Transform atInitialTransform, float afCol
 
 TRPlayer::~TRPlayer()
 {
+	/*for (int i = 0; i < 5; ++i)
+	{
+		if (pHeartsUI[i])
+		{
+			delete pHeartsUI[i];
+		}
+	}*/
 }
 
 void TRPlayer::OnStart()
 {
 	QTransform()->SetClamp(vPlayerXClamp.x, vPlayerXClamp.y, vPlayerYClamp.x, vPlayerYClamp.y);
 	iHealth = 5;
+
+	// Create hearts UI
+	for (int i = 0; i < iHealth; ++i)
+	{
+		if (!pHeartsUI[i])
+		{
+			pHeartsUI[i] = new TRUIElement(0.05f + (0.05f * i), 0.05f, 0.5f, iHealthHUDTexture);
+			TRInterface::QInstance()->AddUIElement(pHeartsUI[i]);
+		}
+		else
+		{
+			pHeartsUI[i]->SetVisibility(true);
+		}
+	}
 
 	TRLoggerImGui::QInstance()->AddLog("New player started!", LogSeverity::TR_DEFAULT);
 	this->TRWorldObject::OnStart();
@@ -73,18 +113,6 @@ void TRPlayer::OnUpdate()
 		HandleShotFired();
 	}
 
-	// Health UI
-	for (int i = 0; i < iHealth; i++)
-	{
-		TRRenderer::QInstance().AddRenderTarget(
-			(transform->QPositionX() - 1) + (0.5f * i),
-			transform->QPositionY() - 0.75f,
-			transform->QPositionZ(),
-			transform->QRotation(),
-			iHealthHUDTexture,
-			0.2f);
-	}
-
 	this->TRWorldObject::OnUpdate();
 }
 
@@ -100,6 +128,13 @@ void TRPlayer::OnFixedUpdate()
 			bCanShoot = true;
 		}
 	}
+
+	if (bTriCannonActive)
+	{
+		fTricannonTime -= FIXED_DELTA_TIME;
+		bTriCannonActive = fTricannonTime > 0;
+	}
+
 	this->TRWorldObject::OnFixedUpdate();
 }
 
@@ -125,6 +160,7 @@ void TRPlayer::RestoreHealth(int aiHealAmount)
 	TRLoggerImGui::QInstance()->AddLog("Player healed!", LogSeverity::TR_DEFAULT);
 	iHealth += aiHealAmount;
 	iHealth = std::min(iHealth, iStartHealth);
+	UpdateHeartsUI();
 }
 
 void TRPlayer::TakeDamage(int aiDamage)
@@ -132,13 +168,26 @@ void TRPlayer::TakeDamage(int aiDamage)
 	TRLoggerImGui::QInstance()->AddLog("Player hit!", LogSeverity::TR_DEFAULT);
 	iHealth -= aiDamage;
 	TRWorld::QInstance()->SetCamShakeDuration(0.5f);
+	UpdateHeartsUI();
 
 	if (iHealth <= 0)
 	{
 		TRWorld::QInstance()->SetCamShakeDuration(2);
-		Destroy(TRWorld::QInstance()->QObjExplosionPlayer());
+		Destroy(TRWorld::QInstance()->QObjExplosion());
 		TRLoggerImGui::QInstance()->AddLog("Player died", LogSeverity::TR_ERROR);
 		TRWorld::QInstance()->EndGame();
+	}
+}
+
+/// <summary>
+/// If not already active, enables the tricannon
+/// </summary>
+void TRPlayer::RequestTricannon()
+{
+	if (!bTriCannonActive)
+	{
+		bTriCannonActive = true;
+		fTricannonTime = fTricannonDuration;
 	}
 }
 
@@ -199,7 +248,20 @@ void TRPlayer::CalculateTargetVelocity()
 /// </summary>
 void TRPlayer::HandleShotFired()
 {
-	TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjPlayerProjectile(), *transform, 0.5f, CollisionLayer::CL_PLAYER_PROJECTILE)->InitializeProjectileData(10.0f, 0.0f, 5.0f);
+	int iShotsToFire = 1;
+	if (bTriCannonActive)
+	{
+		iShotsToFire = 3;
+	}
+
+	for (int i = 0; i < iShotsToFire; ++i)
+	{
+		// Construct the fire point
+		Transform tFirePos = *transform;
+		tFirePos.Translate(vShotPositionsA[i].x, vShotPositionsA[i].y, 0, 0);
+
+		TRWorld::QInstance()->InstanciateObject<TRProjectile>(TRWorld::QInstance()->QObjPlayerProjectile(), tFirePos, 0.5f, CollisionLayer::CL_PLAYER_PROJECTILE)->InitializeProjectileData(10.0f, 0.0f, 5.0f);
+	}
 	bCanShoot = false;
 	iTicksSinceShot = 0;
 }

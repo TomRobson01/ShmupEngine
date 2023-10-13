@@ -10,8 +10,10 @@ public:
 	void OnEnemyDeath(bool abDespawned = false);
 	void OnWaveEnd();
 	void TrySpawnDrop(const float afSpawnX, const float afSpawnY);
+	void KillAll();
 
 	float QScrollSpeedMultiplier() const { return fScrollSpeedMultiplier; }
+	bool QWaveEnded() const;
 
 private:
 	TRWaveManager() {};

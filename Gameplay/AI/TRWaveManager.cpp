@@ -15,12 +15,13 @@ namespace
 	clock_t lastSpawnTime;
 	clock_t waveEndTime;
 	bool bWaveEnded = false;
+	bool bKillAll = true;
 
 	uint16_t uiWave = 1;
 
 	uint16_t uiEnemiesSpawned			= 0;
 	uint16_t uiEnemiesKilled			= 0;
-	uint16_t uiWaveTarget				= 6;
+	uint16_t uiWaveTarget				= 12;
 
 	uint16_t uiSpawnedToughs			= 0;
 	uint16_t uiSpawnedSuiciders			= 0;
@@ -30,16 +31,18 @@ namespace
 	uint16_t uiAllowedEnemyTypes		= 0;
 	uint16_t uiWavesUntilNewType		= 3;
 	uint16_t uiNextEnemyIntroducedWave	= 3;
-	uint16_t uiWaveTargetIncrement		= 3;
+	uint16_t uiWaveTargetIncrement		= 6;
 
 	uint16_t uiDropsThisWave			= 0;
 	clock_t lastDrop;
 
-	enum class ENEMY_TYPE : int
+	enum class ENEMY_TYPE : uint16_t
 	{
 		BASIC,
-		TOUGH,
+		EMITTER,
+		DEBRIS,
 		SUICIDER,
+		TOUGH,
 		COUNT
 	};
 }
@@ -53,6 +56,8 @@ TRWaveManager* const TRWaveManager::QInstance()
 	}
 	return instancePtr;
 }
+
+bool TRWaveManager::QWaveEnded() const { return bWaveEnded; }
 
 /// <summary>Ticks the wave manager along. Handles timers for spawning and wave intermissions.</summary>
 void TRWaveManager::Update()
@@ -121,37 +126,68 @@ void TRWaveManager::SpawnEnemy()
 		float iSpawnY = (rand() % 210 + (-100)) * 0.1f;
 		Transform spawnTransform = Transform(20 + iSpawnXOffset, iSpawnY, 0, 0);
 
-		switch (rand() % (int)ENEMY_TYPE::COUNT)
+		uint16_t uiPickedType = rand() % (uint16_t)ENEMY_TYPE::COUNT;
+		uiPickedType = std::max(uiPickedType, uiAllowedEnemyTypes);
+
+		switch (uiPickedType)
 		{
-		case (int)ENEMY_TYPE::SUICIDER:
+		case (uint16_t)ENEMY_TYPE::EMITTER:
+			if (uiAllowedEnemyTypes >= (int)ENEMY_TYPE::EMITTER)
+			{
+				std::shared_ptr<TREnemy> e = TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemyEmitter(), spawnTransform, 1.0f, CollisionLayer::CL_ENEMY);
+
+				e->AddFirePoint(0, 0,  -1,	0);
+				e->AddFirePoint(0, 0,	1,	0);
+				e->AddFirePoint(0, 0,	0, -1);
+				e->AddFirePoint(0, 0,	0,	1);
+
+				e->SetMoveSpeed(1);
+				e->SetHealth(10);
+				e->SetMotionType(ENEMY_MOTION_TYPE::MT_SINE);
+				e->SetSineAmplitude(0.5f);
+				break;
+			}
+		case (uint16_t)ENEMY_TYPE::DEBRIS:
+			if (uiAllowedEnemyTypes >= (int)ENEMY_TYPE::DEBRIS)
+			{
+				std::shared_ptr<TREnemy> e = TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemyDebris(), spawnTransform, 1.0f, CollisionLayer::CL_ENEMY_SUICIDER);
+				e->SetMoveSpeed(3);
+				e->SetHealth(5);
+				e->SetMotionType(ENEMY_MOTION_TYPE::MT_SINE);
+				e->SetSineAmplitude(0.5f);
+				break;
+			}
+		case (uint16_t)ENEMY_TYPE::SUICIDER:
 			if (uiAllowedEnemyTypes >= (int)ENEMY_TYPE::SUICIDER && uiSpawnedSuiciders < uiSuiciderClusterBudget)
 			{
 				std::shared_ptr<TREnemy> e = TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemySuicider(), spawnTransform, 1.0f, CollisionLayer::CL_ENEMY_SUICIDER);
 				e->SetMotionType(ENEMY_MOTION_TYPE::MT_HOMING);
-				e->SetMoveSpeed(2);
+				e->SetMoveSpeed(3);
 
 				++uiSpawnedSuiciders;
 				break;
 			}
-		case (int)ENEMY_TYPE::TOUGH:
+		case (uint16_t)ENEMY_TYPE::TOUGH:
 			if (uiAllowedEnemyTypes >= (int)ENEMY_TYPE::TOUGH && uiSpawnedToughs < uiToughsClusterBudget)
 			{
 				std::shared_ptr<TREnemy> e = TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemyTough(), spawnTransform, 1.0f, CollisionLayer::CL_ENEMY);
 				e->AddFirePoint(0, 0);
 				e->AddFirePoint(0, -1);
 				e->AddFirePoint(0, 1);
-				e->SetHealth(17);
+				e->SetHealth(12);
 				e->SetMoveSpeed(0.5f);
 				e->SetMotionType(ENEMY_MOTION_TYPE::MT_SINE);
 
 				++uiSpawnedToughs;
 				break;
 			}
-		case (int)ENEMY_TYPE::BASIC:
+		case (uint16_t)ENEMY_TYPE::BASIC:
 		{
 			std::shared_ptr<TREnemy> e = TRWorld::QInstance()->InstanciateObject<TREnemy>(TRWorld::QInstance()->QObjEnemy(), spawnTransform, 1.0f, CollisionLayer::CL_ENEMY);
 			e->AddFirePoint(0, 0);
-			e->SetHealth(6);
+			e->SetMoveSpeed(3.f);
+			e->SetProjectileSpeed(8.f);
+			e->SetHealth(1);
 		}
 			break;
 		}
@@ -212,8 +248,7 @@ void TRWaveManager::TrySpawnDrop(const float afSpawnX, const float afSpawnY)
 			if (rand() % 100 < DROP_CHANCE)
 			{
 				Transform spawnTransform = Transform(afSpawnX, afSpawnY, 0, 0);
-				std::shared_ptr<TRDrop> e = TRWorld::QInstance()->InstanciateObject<TRDrop>(TRWorld::QInstance()->QObjPickupHeart(), spawnTransform, 1.0f, CollisionLayer::CL_DEFAULT);
-				e->SetScale(0.3f);
+				std::shared_ptr<TRDrop> e = TRWorld::QInstance()->InstanciateObject<TRDrop>(TRWorld::QInstance()->QObjPickup(), spawnTransform, 1.0f, CollisionLayer::CL_DEFAULT);
 				TRLogger::QInstance()->Log("Spawn drop!");
 				lastDrop = cCurrentClock;
 				++uiDropsThisWave;
@@ -221,3 +256,15 @@ void TRWaveManager::TrySpawnDrop(const float afSpawnX, const float afSpawnY)
 		}
 	}
 }
+
+/// <summary>
+/// Automatically ends the wave, killing all enemies
+/// </summary>
+void TRWaveManager::KillAll()
+{
+	uiEnemiesKilled = uiWaveTarget;
+	OnEnemyDeath();
+	uiEnemiesSpawned = 0;
+}
+
+

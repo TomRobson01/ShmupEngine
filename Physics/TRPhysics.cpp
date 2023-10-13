@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <thread>
+#include <unordered_map> 
 #include <vector>
 
 #include "Objects/TRWorld.h"
@@ -40,27 +41,9 @@ bool QIsColliding(CollisionData apColliderA, CollisionData apColliderB)
 {
 	bool bRetVal = false;
 
-	// Safety checks - don't even try anything if anything essential is nullptr
-	/*if (!apColliderA || !apColliderB)
-		return false;*/
-
-	float fColA_X = apColliderA.x;
-	float fColA_Y = apColliderA.y;
-	float fColA_Radius = apColliderA.radius;
-
-	float fColB_X = apColliderB.x;
-	float fColB_Y = apColliderB.y;
-	float fColB_Radius = apColliderB.radius;
-
-	float fLargestRadius = std::max(fColA_Radius, fColB_Radius);
-	float fTangent = abs(fColB_Y - fColA_Y);
-	float fAdjacent = abs(fColB_X - fColA_X);
-	float fDist = sqrtf((fTangent * fTangent) + (fAdjacent * fAdjacent));
-
-	if (fDist < fLargestRadius)
-	{
-		bRetVal = true;
-	}
+	const bool bXCollision = apColliderA.x + apColliderA.radius >= apColliderB.x && apColliderB.x + apColliderB.radius >= apColliderA.x;	// one.Position.x + one.Size.x >= two.Position.x
+	const bool bYCollision = apColliderA.y + apColliderA.radius >= apColliderB.y && apColliderB.y + apColliderB.radius >= apColliderA.y;
+	bRetVal = bXCollision && bYCollision;
 
 	return bRetVal;
 }
